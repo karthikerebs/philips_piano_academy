@@ -1,0 +1,37 @@
+class RouterConstants {
+  static const String splashRoute = '/';
+  static const String loginRoute = '/login';
+  static const String registerRoute = '/register';
+  static const String slotSelectionRoute = '/selectSlot';
+  static const String choosePaymentRoute = '/choosePayment';
+  static const String feeDetailsRoute = '/feeDetails';
+  static const String bottomNavRoute = '/bottomNav';
+  static const String latestBlogRoute = '/latestBlogs';
+  static const String blogDetailsRoute = '/blogDetails';
+  static const String tutorialVideoRoute = '/videoTutorial';
+  static const String tutorialVideoDetailRoute = '/videoTutorialDetails';
+  static const String editProfileRoute = '/editProfile';
+  static const String normalClassRoute = '/normalClass';
+  static const String cancelMutipleClassRoute = '/cancelMultipleClass';
+  static const String noteDetailsRoute = '/noteDetails';
+  static const String classRescheduleRoute = '/classReschedule';
+  static const String refundRoute = '/refund';
+  static const String creditClassRoute = '/creditClass';
+  static const String creditClassChangeRoute = '/creditClassChange';
+  static const String installemntsView = '/installments';
+  static const String planVacationRoute = '/planVacation';
+  static const String transactionsRoute = '/transaction';
+  static const String classCancellationRoute = '/classCancellation';
+  static const String supportRoute = '/support';
+  static const String chatRoute = '/chat';
+  static const String paidClassRoute = '/paidClass';
+  static const String paidClasschangeRoute = '/paidClassChange';
+  static const String settingsRoute = '/settings';
+  static const String changePasswordRoute = '/changePassword';
+  static const String renewalRoute = '/renewal';
+  static const String renewalFeeDetailsRoute = '/renewalFeeDetails';
+  static const String privacyPolicyRoute = '/privacyPolicy';
+  static const String termsAndConditionsRoute = '/termsAndConditions';
+  static const String activitiesRoute = '/activities';
+  static const String paidFeeDeatilsRoute = '/paidFeeDetails';
+}

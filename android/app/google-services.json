@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1049745858626",
+    "project_id": "philipspiano-c8f54",
+    "storage_bucket": "philipspiano-c8f54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049745858626:android:a210f9d56874a4ad154ddb",
+        "android_client_info": {
+          "package_name": "com.music.music_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA396QJDqSYnwzlxkmQmftU2sSoP4NQkEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049745858626:android:21acc8b56af06586154ddb",
+        "android_client_info": {
+          "package_name": "com.music_app.music_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA396QJDqSYnwzlxkmQmftU2sSoP4NQkEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049745858626:android:872fb4f360a8fc9e154ddb",
+        "android_client_info": {
+          "package_name": "com.philipspianoacademy.music"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA396QJDqSYnwzlxkmQmftU2sSoP4NQkEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

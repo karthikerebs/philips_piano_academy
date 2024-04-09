@@ -1,0 +1,42 @@
+class AppImages {
+  static const String logo = "assets/images/logo.png";
+  static const String arrowBackIcon = "assets/images/ic_arrow_back.png";
+  static const String arrowDownIcon = "assets/images/ic_arrow_down.png";
+  static const String loginBottom = "assets/images/login_bottom.png";
+  static const String homeIcon = "assets/images/ic_home.png";
+  static const String notificationIcon = "assets/images/ic_notification.png";
+  static const String profileIcon = "assets/images/ic_profile.png";
+  static const String homeVector = "assets/images/home_vector.png";
+  static const String lockIcon = "assets/images/ic_lock.png";
+  static const String chatIcon = "assets/images/ic_chat.png";
+  static const String basic = "assets/images/ic_basic_details.png";
+  static const String transcation = "assets/images/ic_transactions.png";
+  static const String settings = "assets/images/ic_settings.png";
+  static const String suppoert = "assets/images/ic_support.png";
+  static const String calendar = "assets/images/ic_calendar.png";
+  static const String planVaction = "assets/images/ic_plan_vacation.png";
+  static const String resedulw = "assets/images/ic_class_schedule.png";
+  static const String portions = "assets/images/ic_booklet.png";
+  static const String imageProfile = "assets/images/image.jpg";
+  static const String successIcon = "assets/images/ic_success.png";
+  static const String tickIcon = "assets/images/ic_tick.png";
+  static const String blogBg = "assets/images/blog_bg.png";
+  static const String tutorialVideoBg = "assets/images/tutorial_video_bg.png";
+  static const String installmentIcon = "assets/images/ic_installment.png";
+  static const String creditClassIcon = "assets/images/ic_credit_class.png";
+  static const String sendIcon = "assets/images/ic_send.png";
+  static const String visibleIcon = 'assets/images/ic_eye.png';
+  static const String visibleOffIcon = 'assets/images/ic_eye_off.png';
+  static const String paidClassIcon = 'assets/images/ic_paid_class.png';
+  static const String privacyIcon = 'assets/images/ic_privacy_policy.png';
+  static const String cookeeIcon = 'assets/images/ic_cookee.png';
+  static const String notificationSettingsIcon =
+      'assets/images/ic_notification_settings.png';
+  static const String openSourceIcon = 'assets/images/ic_open_source.png';
+  static const String passwordIcon = 'assets/images/ic_password.png';
+  static const String renewalIcon = 'assets/images/ic_renewal.png';
+  static const String logoutIcon = 'assets/images/ic_logout.png';
+  static const String activityIcon = 'assets/images/ic_activity.png';
+  static const String placeHolder = 'assets/images/placeholder.png';
+  static const String deleteIcon = 'assets/images/ic_delete.png';
+}
