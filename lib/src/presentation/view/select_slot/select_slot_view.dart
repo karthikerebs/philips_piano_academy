@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/auth/bloc/auth_bloc.dart';
 import 'package:music_app/src/application/core/status.dart';
@@ -7,13 +9,13 @@ import 'package:music_app/src/application/slot_booking/slot_booking_bloc.dart';
 import 'package:music_app/src/domain/core/pref_key/preference_key.dart';
 import 'package:music_app/src/domain/models/response_models/slot_model/slote.dart';
 import 'package:music_app/src/infrastructure/core/preference_helper.dart';
+import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/constants/strings.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/drop_down.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/core/widgets/primary_button.dart';
-import 'package:music_app/src/presentation/view/select_slot/widgets/slote_list.dart';
 
 class SelectSlotView extends StatefulWidget {
   const SelectSlotView({super.key});
@@ -39,6 +41,8 @@ class _SelectSlotViewState extends State<SelectSlotView> {
   final formKey = GlobalKey<FormState>();
   ValueNotifier<int> isSelectSlot = ValueNotifier(-1);
   final name = ValueNotifier("");
+  int? selectedSlotId;
+  String? selectedDate;
   @override
   void initState() {
     getName();
@@ -112,12 +116,13 @@ class _SelectSlotViewState extends State<SelectSlotView> {
                         color: AppColors.blackColor,
                       ));
                     } else if (state.status is StatusSuccess) {
-                      return SloteList(
+                      return dateTile(kSize,
+                          state); /* SloteList(
                         day: dayController.text,
                         state: state,
                         isSelectSlot: isSelectSlot,
                         selectedSlote: selectedSlote,
-                      );
+                      ); */
                     } else if (state.status is StatusFailure) {
                       final status = state.status as StatusFailure;
                       return Center(child: Text(status.errorMessage));
@@ -134,24 +139,25 @@ class _SelectSlotViewState extends State<SelectSlotView> {
                       valueListenable: isValidate,
                       builder: (context, value, child) {
                         return PrimaryButton(
-                            backgroundColor: isSelectSlot.value != -1
-                                ? AppColors.primaryColor
+                            backgroundColor: selectedSlote.value.id != null
+                                ? isSlotSelected(selectedSlote.value.id!,
+                                        dayController.text)
+                                    ? AppColors.primaryColor
+                                    : AppColors.greyColor
                                 : AppColors.greyColor,
                             labelColor: AppColors.secondaryColor,
                             onPressed: () {
-                              if (dayController.text.isEmpty) {
-                                isValidate.value = false;
-                              } else {
-                                isValidate.value = true;
-                              }
-                              if (isSelectSlot.value != -1) {
-                                Navigator.pushNamed(
-                                    context, RouterConstants.choosePaymentRoute,
-                                    arguments: {
-                                      "day": dayController.text,
-                                      "slote": selectedSlote.value.slote,
-                                      "slotId": selectedSlote.value.id
-                                    });
+                              if (selectedSlote.value.id != null) {
+                                if (isSlotSelected(selectedSlote.value.id!,
+                                    dayController.text)) {
+                                  Navigator.pushNamed(context,
+                                      RouterConstants.choosePaymentRoute,
+                                      arguments: {
+                                        "day": dayController.text,
+                                        "slote": selectedSlote.value.slote,
+                                        "slotId": selectedSlote.value.id
+                                      });
+                                }
                               }
                             },
                             label: 'Proceed');
@@ -159,7 +165,31 @@ class _SelectSlotViewState extends State<SelectSlotView> {
                     );
                   },
                 ),
-                SizedBox(height: kSize.height * 0.028),
+                SizedBox(height: kSize.height * .02),
+                Center(
+                  child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                          text: 'Go to the login screen',
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('You tapped on the rich text part.');
+                              PreferenceHelper().setBool(
+                                  key: AppPrefeKeys.logged, value: false);
+                              PreferenceHelper().setString(
+                                  key: AppPrefeKeys.token, value: "");
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                RouterConstants.splashRoute,
+                                (route) => false,
+                              );
+                            },
+                          style: AppTypography.dmSansRegular.copyWith(
+                              decoration: TextDecoration.underline,
+                              fontSize: 12,
+                              color: AppColors.blackColor))),
+                ),
+                SizedBox(height: kSize.height * .04),
               ],
             ),
           )),
@@ -192,5 +222,108 @@ class _SelectSlotViewState extends State<SelectSlotView> {
 
   getName() async {
     name.value = await PreferenceHelper().getString(key: AppPrefeKeys.name);
+  }
+
+  Widget dateTile(Size kSize, SlotBookingState state) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.06),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Choose Time',
+              style: AppTypography.dmSansRegular.copyWith(
+                  color: AppColors.primaryColor,
+                  fontSize: kSize.height * 0.022)),
+          SizedBox(height: kSize.height * 0.018),
+          state.slotList.isNotEmpty
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.slotList.length,
+                  padding: EdgeInsets.only(top: kSize.height * 0.01),
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 7,
+                      mainAxisSpacing: 9,
+                      childAspectRatio: 2.2),
+                  itemBuilder: (context, index) {
+                    return timeTile(kSize, state.slotList[index], index);
+                  },
+                )
+              : const Center(child: Text('no slots found!')),
+        ],
+      ),
+    );
+  }
+
+  Widget timeTile(Size kSize, Slote sloteData, int index) {
+    return InkWell(
+      splashColor: AppColors.transparent,
+      highlightColor: AppColors.transparent,
+      onTap: () {
+        if (sloteData.availability == 'Available') {
+          selectedSlote.value = sloteData;
+          // widget.isSelectSlot.value = index;
+          handleSlotSelection(sloteData.id!, dayController.text);
+        }
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: sloteData.availability == 'Available'
+                ? AppColors.greenColor
+                : AppColors.secondaryColor,
+            border: Border.all(
+                color: sloteData.availability == 'Available'
+                    ? AppColors.transparent
+                    : AppColors.borderGreyColor),
+            borderRadius: BorderRadius.circular(kSize.height * 0.0118)),
+        child: /* sloteData.availability == 'Available'
+                ? widget.isSelectSlot.value == index */
+            isSlotSelected(sloteData.id!, dayController.text)
+                ? Image.asset(
+                    AppImages.tickIcon,
+                    height: kSize.height * .018,
+                    color: AppColors.secondaryColor,
+                  )
+                : Text(formatedTime(sloteData.slote!),
+                    style: AppTypography.dmSansRegular.copyWith(
+                        fontSize: kSize.height * 0.0165,
+                        color: sloteData.availability == 'Available'
+                            ? AppColors.secondaryColor
+                            : AppColors.borderGreyColor))
+        /* : Text(formatedTime(sloteData.slote!),
+                    style: AppTypography.dmSansRegular.copyWith(
+                        fontSize: kSize.height * 0.0165,
+                        color: sloteData.availability == 'Available'
+                            ? AppColors.secondaryColor
+                            : AppColors.borderGreyColor)) */
+        ,
+      ),
+    );
+  }
+
+  String formatedTime(String timeString) {
+    DateTime time = DateFormat.Hms().parse(timeString);
+    // Format the time to AM/PM format
+    String formattedTime = DateFormat.jm().format(time);
+    return formattedTime;
+  }
+
+  void handleSlotSelection(int slotId, String date) {
+    setState(() {
+      // If the selected slot is the same as the currently selected slot, deselect it
+      if (selectedSlotId == slotId && dayController.text == date) {
+        selectedSlotId = null;
+        selectedDate = null;
+      } else {
+        selectedSlotId = slotId;
+        selectedDate = date;
+      }
+    });
+  }
+
+  bool isSlotSelected(int slotId, String date) {
+    return selectedSlotId == slotId && selectedDate == date;
   }
 }

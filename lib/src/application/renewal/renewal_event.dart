@@ -44,3 +44,10 @@ class CheckRenewalEvent extends RenewalEvent {
   @override
   List<Object> get props => [];
 }
+
+class RenewalWebhookEvent extends RenewalEvent {
+  const RenewalWebhookEvent({required this.params});
+  final PmRenewalWebhook params;
+  @override
+  List<Object> get props => [params];
+}

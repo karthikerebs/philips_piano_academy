@@ -19,7 +19,7 @@ class BlogDetails extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Container(
-          height: kSize.height * 0.26,
+          // height: kSize.height * 0.26,
           margin: EdgeInsets.only(bottom: kSize.height * 0.0094),
           width: kSize.width,
           padding: EdgeInsets.symmetric(
@@ -90,7 +90,7 @@ class BlogDetails extends StatelessWidget {
               ),
               Positioned(
                 top: 0,
-                bottom: -5,
+                bottom: 0,
                 right: 0,
                 child: Align(
                   alignment: Alignment.bottomRight,

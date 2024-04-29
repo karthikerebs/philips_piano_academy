@@ -10,6 +10,7 @@ import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/core/widgets/textfield.dart';
 import 'package:music_app/src/presentation/core/widgets/validators.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});
@@ -26,18 +27,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: "Change Password"),
       backgroundColor: AppColors.secondaryColor,
       body: SizedBox(
           height: kSize.height,

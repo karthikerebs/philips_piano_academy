@@ -55,3 +55,17 @@ class CheckPaidClassEvent extends PaidClassEvent {
   @override
   List<Object> get props => [classDate, slotId];
 }
+
+class PaidWebhookEvent extends PaidClassEvent {
+  const PaidWebhookEvent({required this.params});
+  final PmPaidWebhook params;
+  @override
+  List<Object> get props => [params];
+}
+
+class GetPaidClassNoteEvent extends PaidClassEvent {
+  const GetPaidClassNoteEvent({required this.classId});
+  final String classId;
+  @override
+  List<Object> get props => [classId];
+}

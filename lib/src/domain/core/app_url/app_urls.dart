@@ -57,4 +57,9 @@ class AppUrls {
   static const getBasicDetailsUrl = "$baseUrl/basic-details";
   static const checkPaidClassUrl = "$baseUrl/check-paid-class";
   static const checkRenwalUrl = "$baseUrl/check-renewal-request";
+  static const sloteBookingWebhookUrl = "$baseUrl/book-slote-webhook";
+  static const paidClassWebhookUrl = "$baseUrl/paid-class-webhook";
+  static const renewalWebhookUrl = "$baseUrl/renewal-webhook";
+  static const paidClassNoteUrl = "$baseUrl/paid-class-note";
+  static const creditClassNoteUrl = "$baseUrl/credit-class-note";
 }

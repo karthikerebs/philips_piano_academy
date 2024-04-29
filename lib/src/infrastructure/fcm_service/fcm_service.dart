@@ -37,7 +37,13 @@ class FcmService {
   getPermissions() async {
     try {
       if (Platform.isIOS) {
-        await _fcm.requestPermission();
+        // Request permission for iOS devices
+        _fcm.requestPermission(
+          alert: true,
+          badge: true,
+          provisional: false,
+          sound: true,
+        );
       }
       await _fcm.requestPermission(
         alert: true,
@@ -92,7 +98,8 @@ class FcmService {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         if (notification != null && android != null && !kIsWeb) {
-          var android = const AndroidInitializationSettings('launcher_icon');
+          var android =
+              const AndroidInitializationSettings('@drawable/logo_icon');
           var ios = const DarwinInitializationSettings(
               defaultPresentSound: true, requestSoundPermission: true);
           var platform = InitializationSettings(android: android, iOS: ios);
@@ -111,7 +118,7 @@ class FcmService {
                 channel.id,
                 channel.name,
                 channelDescription: channel.description,
-                icon: 'launcher_icon',
+                icon: 'logo_icon',
                 priority: Priority.high,
                 color: AppColors.blackColor,
                 importance: Importance.high,
@@ -126,7 +133,8 @@ class FcmService {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         if (notification != null && android != null && !kIsWeb) {
-          var android = const AndroidInitializationSettings('launcher_icon');
+          var android =
+              const AndroidInitializationSettings('@drawable/logo_icon');
           var ios = const DarwinInitializationSettings(
               defaultPresentSound: true, requestSoundPermission: true);
           //IOSInitializationSettings(defaultPresentSound: true, requestSoundPermission: true);
@@ -146,7 +154,7 @@ class FcmService {
                 channel.id,
                 channel.name,
                 channelDescription: channel.description,
-                icon: 'launcher_icon',
+                icon: 'logo_icon',
                 priority: Priority.high,
                 color: AppColors.blackColor,
                 importance: Importance.high,

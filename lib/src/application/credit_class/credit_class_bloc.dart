@@ -12,6 +12,8 @@ import 'package:music_app/src/domain/models/response_models/emergency_cancel_mod
 import 'package:music_app/src/domain/models/response_models/slot_model/slote.dart';
 import 'package:music_app/src/domain/models/response_models/upcoming_slotes_model/dates_and_available_slote.dart';
 
+import '../../domain/models/response_models/completed_note_model/completed_note_model.dart';
+
 part 'credit_class_event.dart';
 part 'credit_class_state.dart';
 
@@ -25,6 +27,7 @@ class CreditClassBloc extends Bloc<CreditClassEvent, CreditClassState> {
     on<CancelCreditClassEvent>(_cancelCreditClass);
     on<EmergencyCancelEvent>(_emergencyCancelCredit);
     on<UpcomingCreditSloteEvent>(_getUpcomingSlotes);
+    on<GetCreditClassNoteEvent>(_creditClassNote);
   }
   FutureOr<void> _getCreditClass(
       GetCreditClassEvent event, Emitter<CreditClassState> emit) async {
@@ -139,6 +142,24 @@ class CreditClassBloc extends Bloc<CreditClassEvent, CreditClassState> {
     } on ApiAuthFailure catch (e) {
       emit(
           state.copyWith(upcomingSlotStatus: StatusAuthFailure(e.error ?? "")));
+    }
+  }
+
+  FutureOr<void> _creditClassNote(
+      GetCreditClassNoteEvent event, Emitter<CreditClassState> emit) async {
+    try {
+      emit(state.copyWith(status: StatusLoading()));
+      final res = await _iCreditClassRepository.getCreditClassNotes(
+          classId: event.classId);
+      if (res.statusCode == '01') {
+        emit(state.copyWith(status: StatusSuccess(), completedClassNote: res));
+      } else {
+        emit(state.copyWith(status: const StatusFailure("Request fail")));
+      }
+    } on ApiFailure catch (e) {
+      emit(state.copyWith(status: StatusFailure(e.message)));
+    } on ApiAuthFailure catch (e) {
+      emit(state.copyWith(status: StatusAuthFailure(e.error ?? "")));
     }
   }
 

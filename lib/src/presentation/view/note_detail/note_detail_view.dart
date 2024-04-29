@@ -93,55 +93,6 @@ class _NoteDetailViewState extends State<NoteDetailView> {
                                 color: AppColors.primaryColor,
                                 fontSize: kSize.height * 0.0189)),
                         SizedBox(height: kSize.height * 0.0355),
-                        /* Text('Assignment',
-                            style: AppTypography.dmSansMedium.copyWith(
-                                color: AppColors.primaryColor,
-                                fontSize: kSize.height * 0.0284)),
-                        SizedBox(height: kSize.height * 0.018),
-                        Container(
-                          width: kSize.width,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: AppColors.lightgreyColor1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text('Assignment 01',
-                              style: AppTypography.dmSansMedium.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontSize: kSize.height * 0.0189)),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          width: kSize.width,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: AppColors.lightgreyColor1,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text('Assignment 02',
-                              style: AppTypography.dmSansMedium.copyWith(
-                                  color: AppColors.primaryColor,
-                                  fontSize: kSize.height * 0.0189)),
-                        ),
-                        SizedBox(height: kSize.height * 0.0355),
-                        Text('Your Remark/Feedback',
-                            style: AppTypography.dmSansMedium.copyWith(
-                                color: AppColors.primaryColor,
-                                fontSize: kSize.height * 0.0284)),
-                        SizedBox(height: kSize.height * 0.018),
-                        CustomTextField(
-                            maxLines: 6,
-                            fillColor: AppColors.lightgreyColor1,
-                            hintstyle: AppTypography.dmSansRegular.copyWith(
-                                fontSize: 12, color: AppColors.greyColor),
-                            border: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: AppColors.transparent),
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: 'Type your Remarks/Feedback here......',
-                            controller: controller) */
                       ],
                     );
                   } else if (state.status is StatusFailure) {

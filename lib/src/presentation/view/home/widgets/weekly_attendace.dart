@@ -20,44 +20,12 @@ class _WeeklyAttendenceState extends State<WeeklyAttendence> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return SizedBox(
-      width: kSize.width * .55,
-      child: widget.dates.isNotEmpty
-          ? Column(
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      width: kSize.width * 0.7085,
-                      child: const Divider(
-                        color: AppColors.blackColor,
-                        thickness: 1,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                          widget.dates.length < 4 ? widget.dates.length : 4,
-                          (index) {
-                        bool isCurrentWeek = index < week();
-                        Color widgetColor = isCurrentWeek
-                            ? AppColors.primaryColor
-                            : AppColors.greyColor;
-                        return data(kSize, index, widgetColor);
-                      }),
-                    )
-                  ],
-                ),
-                if (widget.creditClassdates.isNotEmpty) SizedBox(height: 35),
-                if (widget.creditClassdates.isNotEmpty)
-                  Text("Upcoming Credit/Paid Classes",
-                      textAlign: TextAlign.center,
-                      style: AppTypography.dmSansMedium.copyWith(
-                          color: AppColors.primaryColor,
-                          fontSize: kSize.height * 0.0189)),
-                if (widget.creditClassdates.isNotEmpty) SizedBox(height: 35),
-                if (widget.creditClassdates.isNotEmpty)
-                  Stack(
+        width: kSize.width * .55,
+        child: Column(
+          children: [
+            widget.dates.isNotEmpty
+                ? Stack(
+                    alignment: Alignment.center,
                     children: [
                       SizedBox(
                         width: kSize.width * 0.7085,
@@ -69,22 +37,53 @@ class _WeeklyAttendenceState extends State<WeeklyAttendence> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: List.generate(
-                            widget.creditClassdates.length < 4
-                                ? widget.creditClassdates.length
-                                : 4, (index) {
+                            widget.dates.length < 4 ? widget.dates.length : 4,
+                            (index) {
                           bool isCurrentWeek = index < week();
                           Color widgetColor = isCurrentWeek
                               ? AppColors.primaryColor
                               : AppColors.greyColor;
-                          return creditdata(kSize, index, widgetColor);
+                          return data(kSize, index, widgetColor);
                         }),
                       )
                     ],
                   )
-              ],
-            )
-          : Center(child: Text('No classes found!')),
-    );
+                : Center(child: Text('No classes found!')),
+            if (widget.creditClassdates.isNotEmpty) SizedBox(height: 35),
+            if (widget.creditClassdates.isNotEmpty)
+              Text("Upcoming Credit/Paid Classes",
+                  textAlign: TextAlign.center,
+                  style: AppTypography.dmSansMedium.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.0189)),
+            if (widget.creditClassdates.isNotEmpty) SizedBox(height: 35),
+            if (widget.creditClassdates.isNotEmpty)
+              Stack(
+                children: [
+                  SizedBox(
+                    width: kSize.width * 0.7085,
+                    child: const Divider(
+                      color: AppColors.blackColor,
+                      thickness: 1,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(
+                        widget.creditClassdates.length < 4
+                            ? widget.creditClassdates.length
+                            : 4, (index) {
+                      bool isCurrentWeek = index < week();
+                      Color widgetColor = isCurrentWeek
+                          ? AppColors.primaryColor
+                          : AppColors.greyColor;
+                      return creditdata(kSize, index, widgetColor);
+                    }),
+                  )
+                ],
+              )
+          ],
+        ));
   }
 
   Widget data(Size kSize, int index, Color color) {

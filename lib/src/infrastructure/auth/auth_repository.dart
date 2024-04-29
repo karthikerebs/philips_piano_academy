@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:injectable/injectable.dart';
 import 'package:music_app/src/domain/auth/i_auth_repository.dart';
 import 'package:music_app/src/domain/core/app_url/app_urls.dart';

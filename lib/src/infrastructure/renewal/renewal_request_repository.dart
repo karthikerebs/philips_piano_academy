@@ -4,6 +4,7 @@ import 'package:music_app/src/domain/core/app_url/app_urls.dart';
 import 'package:music_app/src/domain/core/failures/api_auth_failure.dart';
 import 'package:music_app/src/domain/core/failures/api_failure.dart';
 import 'package:music_app/src/domain/core/internet_service/i_base_client.dart';
+import 'package:music_app/src/domain/models/pm_models/pm_renewal_webhook/pm_renewal_webhook.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_send_renew_request_model/pm_send_renew_request_model.dart';
 import 'package:music_app/src/domain/models/response_models/check_renewal_response/check_renewal_response.dart';
 import 'package:music_app/src/domain/models/response_models/common_response_model/common_response_model.dart';
@@ -89,6 +90,25 @@ class RenewalRequestRepository extends IRenewalRepository {
       final decode = jsonDecode(response.data) as Map<String, dynamic>;
       if (decode['status_code'] == "01") {
         return CheckRenewalResponse.fromJson(decode);
+      } else {
+        throw ApiFailure(message: decode['message']);
+      }
+    } on ApiFailure catch (e) {
+      throw ApiFailure(message: e.toString());
+    } on ApiAuthFailure catch (e) {
+      throw ApiAuthFailure(e.error ?? "");
+    }
+  }
+
+  @override
+  Future<CommonResponseModel> renewalWebhook(
+      {required PmRenewalWebhook params}) async {
+    try {
+      final response = await client.postWithProfile(
+          url: AppUrls.renewalWebhookUrl, body: params.toJson());
+      final decode = jsonDecode(response.body) as Map<String, dynamic>;
+      if (decode['status_code'] == "01") {
+        return CommonResponseModel.fromJson(decode);
       } else {
         throw ApiFailure(message: decode['message']);
       }

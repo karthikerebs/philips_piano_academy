@@ -8,6 +8,7 @@ import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/common_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 import 'package:music_app/src/presentation/view/paid_class/widgets/paid_class_tile.dart';
 
 class PaidClassView extends StatefulWidget {
@@ -30,24 +31,7 @@ class _PaidClassViewState extends State<PaidClassView> {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Paid Classes",
-          style: AppTypography.dmSansBold.copyWith(
-              color: AppColors.primaryColor, fontSize: kSize.height * 0.028),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Paid Class"),
       body: RefreshIndicator(
         color: AppColors.blackColor,
         onRefresh: () async {

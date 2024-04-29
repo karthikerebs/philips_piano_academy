@@ -197,14 +197,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                               ],
                             )),
                       ),
-                      SizedBox(height: kSize.height * .1),
+                      // SizedBox(height: kSize.height * .1),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: kSize.width * 0.05),
                         child: Text('Basic Details',
                             style: AppTypography.dmSansRegular.copyWith(
                                 color: AppColors.primaryColor,
-                                fontSize: kSize.height * 0.0284)),
+                                fontSize: kSize.height * 0.0296)),
                       ),
                       SizedBox(height: kSize.height * .015),
                       Container(

@@ -4,6 +4,7 @@ import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
@@ -14,25 +15,12 @@ class SettingsView extends StatelessWidget {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.secondaryColor,
-        leadingWidth: kSize.width * 0.12,
-        elevation: 0,
-        forceMaterialTransparency: true,
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Settings"),
       body: SizedBox(
           height: kSize.height,
           width: kSize.width,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kSize.width * .1),
+            padding: EdgeInsets.symmetric(horizontal: kSize.width * .06),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

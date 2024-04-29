@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/domain/core/failures/api_auth_failure.dart';
 import 'package:music_app/src/domain/core/failures/api_failure.dart';
+import 'package:music_app/src/domain/models/pm_models/pm_renewal_webhook/pm_renewal_webhook.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_send_renew_request_model/pm_send_renew_request_model.dart';
 import 'package:music_app/src/domain/models/response_models/get_renewal_fees_model/get_renewal_fees_model.dart';
 import 'package:music_app/src/domain/models/response_models/plans_model/plan.dart';
@@ -24,6 +25,7 @@ class RenewalBloc extends Bloc<RenewalEvent, RenewalState> {
     on<CleanDataEvent>(_clean);
     on<GetRenewalFeesEvent>(_getRenewalFees);
     on<CheckRenewalEvent>(_checkRequestRenewal);
+    on<RenewalWebhookEvent>(_renewalWebhook);
   }
   FutureOr<void> _getRenewalPlans(
       GetRenewalPlansEvent event, Emitter<RenewalState> emit) async {
@@ -124,6 +126,26 @@ class RenewalBloc extends Bloc<RenewalEvent, RenewalState> {
     } on ApiAuthFailure catch (e) {
       emit(
           state.copyWith(checkRenewalStatus: StatusAuthFailure(e.error ?? "")));
+    }
+  }
+
+  FutureOr<void> _renewalWebhook(
+      RenewalWebhookEvent event, Emitter<RenewalState> emit) async {
+    try {
+      emit(state.copyWith(renewalWebhookStatus: StatusLoading()));
+      final res =
+          await _iRenewalRepository.renewalWebhook(params: event.params);
+      if (res.statusCode == '01') {
+        emit(state.copyWith(renewalWebhookStatus: StatusSuccess()));
+      } else {
+        emit(state.copyWith(
+            renewalWebhookStatus: const StatusFailure("Request fail")));
+      }
+    } on ApiFailure catch (e) {
+      emit(state.copyWith(renewalWebhookStatus: StatusFailure(e.message)));
+    } on ApiAuthFailure catch (e) {
+      emit(state.copyWith(
+          renewalWebhookStatus: StatusAuthFailure(e.error ?? "")));
     }
   }
 

@@ -10,6 +10,8 @@ import 'package:music_app/src/presentation/view/cancel_multiple_class/cancel_mut
 import 'package:music_app/src/presentation/view/change_password/change_password_view.dart';
 import 'package:music_app/src/presentation/view/chat/chat_view.dart';
 import 'package:music_app/src/presentation/view/choose_payment/choose_payment_view.dart';
+import 'package:music_app/src/presentation/view/credit_class/credit_class_note.dart';
+import 'package:music_app/src/presentation/view/paid_class/paid_class_note_view.dart';
 import 'package:music_app/src/presentation/view/paid_class_change/paid_fee_details.dart';
 import 'package:music_app/src/presentation/view/privacy_policy/privacy_policy_view.dart';
 import 'package:music_app/src/presentation/view/renewal/renewal_view.dart';
@@ -192,6 +194,16 @@ class AppRouter {
       case RouterConstants.transactionsRoute:
         return MaterialPageRoute<TransactionView>(
           builder: (_) => TransactionView(),
+        );
+      case RouterConstants.creditClassNoteRoute:
+        final args = settings.arguments as List;
+        return MaterialPageRoute<CreditClassNoteView>(
+          builder: (_) => CreditClassNoteView(title: args[0], id: args[1]),
+        );
+      case RouterConstants.paidClassNoteRoute:
+        final args = settings.arguments as List;
+        return MaterialPageRoute<PaidClassNoteView>(
+          builder: (_) => PaidClassNoteView(title: args[0], id: args[1]),
         );
       default:
         return MaterialPageRoute<Scaffold>(

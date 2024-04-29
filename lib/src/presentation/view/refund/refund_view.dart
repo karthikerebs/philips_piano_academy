@@ -12,6 +12,7 @@ import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/common_button.dart';
 import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 import 'widgets/refund_dialog.dart';
 
@@ -35,18 +36,7 @@ class _RefundViewState extends State<RefundView> {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: "Deposite Refund"),
       body: SizedBox(
           height: kSize.height,
           width: kSize.width,

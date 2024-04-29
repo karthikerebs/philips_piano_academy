@@ -7,6 +7,7 @@ import 'package:music_app/src/domain/core/failures/api_failure.dart';
 import 'package:music_app/src/domain/core/internet_service/i_base_client.dart';
 import 'package:music_app/src/domain/credit_class/i_credit_class_repository.dart';
 import 'package:music_app/src/domain/models/response_models/common_response_model/common_response_model.dart';
+import 'package:music_app/src/domain/models/response_models/completed_note_model/completed_note_model.dart';
 import 'package:music_app/src/domain/models/response_models/credit_class_model/credit_class_model.dart';
 import 'package:music_app/src/domain/models/response_models/emergency_cancel_model/emergency_cancel_model.dart';
 import 'package:music_app/src/domain/models/response_models/slot_model/slot_model.dart';
@@ -104,6 +105,21 @@ class CreditClassRepository extends ICreditClassRepository {
           await client.getWithProfile(url: AppUrls.upcomingSlotesUrl);
       final decode = jsonDecode(response.data) as Map<String, dynamic>;
       return UpcomingSlotesModel.fromJson(decode);
+    } on ApiFailure catch (e) {
+      throw ApiFailure(message: e.toString());
+    } on ApiAuthFailure catch (e) {
+      throw ApiAuthFailure(e.error ?? "");
+    }
+  }
+
+  @override
+  Future<CompletedNoteModel> getCreditClassNotes(
+      {required String classId}) async {
+    try {
+      final response = await client.getWithProfile(
+          url: "${AppUrls.creditClassNoteUrl}/$classId");
+      final decode = jsonDecode(response.data) as Map<String, dynamic>;
+      return CompletedNoteModel.fromJson(decode);
     } on ApiFailure catch (e) {
       throw ApiFailure(message: e.toString());
     } on ApiAuthFailure catch (e) {

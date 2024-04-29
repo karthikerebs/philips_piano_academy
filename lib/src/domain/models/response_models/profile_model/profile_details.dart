@@ -32,74 +32,82 @@ class ProfileDetails extends Equatable {
   @JsonKey(name: 'emergency_cancel')
   final int? emergencyCancel;
   final String? branch;
+  // final String? branch;
+  @JsonKey(name: 'last_day')
+  final String? lastDay;
 
-  const ProfileDetails(
-      {this.name,
-      this.mobile,
-      this.alternativeMobile,
-      this.email,
-      this.address,
-      this.dob,
-      this.guardian,
-      this.classMode,
-      this.validFrom,
-      this.validTo,
-      this.approval,
-      this.status,
-      this.sloteDay,
-      this.sloteTime,
-      this.photo,
-      this.profileEdit,
-      this.username,
-      this.emergencyCancel,
-      this.branch});
+  const ProfileDetails({
+    this.name,
+    this.mobile,
+    this.alternativeMobile,
+    this.email,
+    this.address,
+    this.dob,
+    this.guardian,
+    this.classMode,
+    this.validFrom,
+    this.validTo,
+    this.approval,
+    this.status,
+    this.sloteDay,
+    this.sloteTime,
+    this.photo,
+    this.profileEdit,
+    this.username,
+    this.emergencyCancel,
+    this.branch,
+    this.lastDay,
+  });
 
-  factory ProfileDetails.fromJson(Map<String, dynamic> json) {
-    return _$ProfileDetailsFromJson(json);
-  }
+  factory ProfileDetails.fromJson(Map<String, dynamic> json) =>
+      _$ProfileDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProfileDetailsToJson(this);
 
-  ProfileDetails copyWith(
-      {String? name,
-      String? mobile,
-      String? alternativeMobile,
-      String? email,
-      String? address,
-      String? dob,
-      String? guardian,
-      String? classMode,
-      String? validFrom,
-      String? validTo,
-      String? approval,
-      String? status,
-      String? sloteDay,
-      String? sloteTime,
-      String? photo,
-      String? profileEdit,
-      String? username,
-      int? emergencyCancel,
-      String? branch}) {
+  ProfileDetails copyWith({
+    String? name,
+    String? mobile,
+    String? alternativeMobile,
+    String? email,
+    String? address,
+    String? dob,
+    String? guardian,
+    String? classMode,
+    String? validFrom,
+    String? validTo,
+    String? approval,
+    String? status,
+    String? sloteDay,
+    String? sloteTime,
+    String? photo,
+    String? profileEdit,
+    String? username,
+    int? emergencyCancel,
+    String? branch,
+    String? lastDay,
+  }) {
     return ProfileDetails(
-        name: name ?? this.name,
-        mobile: mobile ?? this.mobile,
-        alternativeMobile: alternativeMobile ?? this.alternativeMobile,
-        email: email ?? this.email,
-        address: address ?? this.address,
-        dob: dob ?? this.dob,
-        guardian: guardian ?? this.guardian,
-        classMode: classMode ?? this.classMode,
-        validFrom: validFrom ?? this.validFrom,
-        validTo: validTo ?? this.validTo,
-        approval: approval ?? this.approval,
-        status: status ?? this.status,
-        sloteDay: sloteDay ?? this.sloteDay,
-        sloteTime: sloteTime ?? this.sloteTime,
-        photo: photo ?? this.photo,
-        profileEdit: profileEdit ?? this.profileEdit,
-        username: username ?? this.username,
-        emergencyCancel: emergencyCancel ?? this.emergencyCancel,
-        branch: branch ?? this.branch);
+      name: name ?? this.name,
+      mobile: mobile ?? this.mobile,
+      alternativeMobile: alternativeMobile ?? this.alternativeMobile,
+      email: email ?? this.email,
+      address: address ?? this.address,
+      dob: dob ?? this.dob,
+      guardian: guardian ?? this.guardian,
+      classMode: classMode ?? this.classMode,
+      validFrom: validFrom ?? this.validFrom,
+      validTo: validTo ?? this.validTo,
+      approval: approval ?? this.approval,
+      status: status ?? this.status,
+      sloteDay: sloteDay ?? this.sloteDay,
+      sloteTime: sloteTime ?? this.sloteTime,
+      photo: photo ?? this.photo,
+      profileEdit: profileEdit ?? this.profileEdit,
+      username: username ?? this.username,
+      emergencyCancel: emergencyCancel ?? this.emergencyCancel,
+      branch: branch ?? this.branch,
+      lastDay: lastDay ?? this.lastDay,
+    );
   }
 
   @override
@@ -123,7 +131,8 @@ class ProfileDetails extends Equatable {
       profileEdit,
       username,
       emergencyCancel,
-      branch
+      branch,
+      lastDay,
     ];
   }
 }

@@ -19,7 +19,8 @@ class CustomDatePicker extends StatefulWidget {
       this.hintColor,
       this.initialDatePickerMode,
       this.borderRadius,
-      this.validator});
+      this.validator,
+      this.lastDate});
   final TextEditingController dateController;
   final String errorMessage;
   final String hintText;
@@ -33,6 +34,7 @@ class CustomDatePicker extends StatefulWidget {
   final DatePickerMode? initialDatePickerMode;
   final BorderRadius? borderRadius;
   final Function? validator;
+  final DateTime? lastDate;
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
 }
@@ -70,7 +72,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           context: context,
           initialDate: widget.initialDate ?? DateTime.now(),
           firstDate: widget.firstDate ?? DateTime(1950),
-          lastDate: DateTime(2050),
+          lastDate: widget.lastDate ?? DateTime(2050),
           initialDatePickerMode:
               widget.initialDatePickerMode ?? DatePickerMode.day,
           initialEntryMode: DatePickerEntryMode.calendarOnly,

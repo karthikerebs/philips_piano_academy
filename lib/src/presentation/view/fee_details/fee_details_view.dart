@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -18,8 +17,8 @@ import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
 import 'package:music_app/src/presentation/core/widgets/date_picker.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/core/widgets/primary_button.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import 'widgets/terms_and_conditions_dialog.dart';
 
 class FeeDetailsView extends StatefulWidget {
@@ -49,6 +48,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
+        appBar: CustomAppBar(title: AppStrings.chooseDate),
         backgroundColor: AppColors.secondaryColor,
         body: SizedBox(
           height: kSize.height,
@@ -106,22 +106,6 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: kSize.height * .08),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomBackButton(onTap: () {
-                          Navigator.pop(context);
-                        }),
-                        Spacer(),
-                        Text(AppStrings.chooseDate,
-                            style: AppTypography.dmSansMedium.copyWith(
-                                color: AppColors.primaryColor,
-                                fontSize: kSize.height * 0.028)),
-                        Spacer(),
-                      ],
-                    ),
-                    SizedBox(height: kSize.height * 0.0094),
                     Center(
                       child: Text(AppStrings.chooseDateDescription,
                           style: AppTypography.dmSansRegular.copyWith(
@@ -134,6 +118,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
                       errorMessage: '',
                       hintText: "Choose Date",
                       hintColor: AppColors.primaryColor,
+                      /* lastDate: DateTime.now().add(Duration(days: 14)), */
                       firstDate:
                           DateTime.now().subtract(const Duration(days: 0)),
                       onChanged: (value) {
@@ -172,6 +157,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
                           );
                         } else if (state.feeDetailStatus is StatusSuccess) {
                           return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               dataTile(kSize, "Fee : ",
                                   "${(state.feeDetails.fee)!.round()}"),
@@ -222,124 +208,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
                                       DateTime.parse(
                                           "${state.feeDetails.validTo}"))),
                               SizedBox(height: kSize.height * .04),
-                              BlocBuilder<HomeBloc, HomeState>(
-                                builder: (context, state) {
-                                  return PrimaryButton(
-                                    onPressed: () {
-                                      if (isDateEqual(DateTime.now(),
-                                          parseDate(dateController.text))) {
-                                        if (isTimeAfterNow(
-                                            widget.slotBookingModel.slote!)) {
-                                          showTermsAndConditionsDialog(
-                                              onTap: () {
-                                            if (state.paymentStatusData
-                                                    .onlinepayStatus ==
-                                                "Disabled") {
-                                              final state = context
-                                                  .read<SlotBookingBloc>()
-                                                  .state;
-                                              final params = PmSlotBookingModel(
-                                                  deposit:
-                                                      "${state.feeDetails.deposit}",
-                                                  extraFee:
-                                                      "${state.feeDetails.extraFee!.round()}",
-                                                  fee:
-                                                      "${state.feeDetails.fee!.round()}",
-                                                  joiningDate:
-                                                      DateFormat("yyyy-MM-dd")
-                                                          .format(DateTime.parse(
-                                                              state.feeDetails
-                                                                  .joiningDate!)),
-                                                  paidAmount:
-                                                      "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!)).round()}",
-                                                  payType: widget
-                                                      .slotBookingModel.payType,
-                                                  paymentMethod: "Offline",
-                                                  planId: widget
-                                                      .slotBookingModel.planId
-                                                      .toString(),
-                                                  referenceId: "reference",
-                                                  sloteId:
-                                                      widget.slotBookingModel
-                                                          .slotId
-                                                          .toString(),
-                                                  validFrom:
-                                                      "${state.feeDetails.validFrom}",
-                                                  validTo:
-                                                      "${state.feeDetails.validTo}");
-                                              log("${params.toJson()}");
-                                              context
-                                                  .read<SlotBookingBloc>()
-                                                  .add(BookingSlotEvent(
-                                                      params: params));
-                                            } else {
-                                              _startPayment();
-                                            }
-                                          });
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  backgroundColor:
-                                                      AppColors.redColor,
-                                                  content: Text(
-                                                    "This Slot unavailable today. Try another date.",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )));
-                                        }
-                                      } else {
-                                        showTermsAndConditionsDialog(onTap: () {
-                                          if (state.paymentStatusData
-                                                  .onlinepayStatus ==
-                                              "Disabled") {
-                                            final state = context
-                                                .read<SlotBookingBloc>()
-                                                .state;
-                                            final params = PmSlotBookingModel(
-                                                deposit:
-                                                    "${state.feeDetails.deposit}",
-                                                extraFee:
-                                                    "${state.feeDetails.extraFee}",
-                                                fee: "${state.feeDetails.fee}",
-                                                joiningDate:
-                                                    DateFormat("yyyy-MM-dd").format(
-                                                        DateTime.parse(state
-                                                            .feeDetails
-                                                            .joiningDate!)),
-                                                paidAmount:
-                                                    "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!))}",
-                                                payType: widget
-                                                    .slotBookingModel.payType,
-                                                paymentMethod: "Offline",
-                                                planId: widget
-                                                    .slotBookingModel.planId
-                                                    .toString(),
-                                                referenceId: "reference",
-                                                sloteId:
-                                                    widget
-                                                        .slotBookingModel.slotId
-                                                        .toString(),
-                                                validFrom:
-                                                    "${state.feeDetails.validFrom}",
-                                                validTo:
-                                                    "${state.feeDetails.validTo}");
-                                            log("${params.toJson()}");
-                                            context.read<SlotBookingBloc>().add(
-                                                BookingSlotEvent(
-                                                    params: params));
-                                          } else {
-                                            _startPayment();
-                                          }
-                                        });
-                                      }
-                                    },
-                                    label: 'Proceed',
-                                    backgroundColor: AppColors.primaryColor,
-                                    labelColor: AppColors.secondaryColor,
-                                  );
-                                },
-                              ),
+                              _proceedButton()
                             ],
                           );
                         } else if (state.feeDetailStatus is StatusFailure) {
@@ -371,10 +240,18 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: AppTypography.dmSansRegular.copyWith(
-                color: AppColors.primaryColor, fontSize: kSize.height * 0.0213),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: AppTypography.dmSansRegular.copyWith(
+                    color: AppColors.primaryColor,
+                    fontSize: kSize.height * 0.0213),
+              ),
+              if (label == "Extra Fee : ")
+                Text("(For current month)", style: TextStyle(fontSize: 10)),
+            ],
           ),
           Text(
             data,
@@ -418,6 +295,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
 
 // Handle payment failure
   void _handlePaymentError(PaymentFailureResponse response) {
+    log(response.toString());
     log("Payment error: ${response.code.toString()} - ${response.message}");
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("${response.message}"),
@@ -459,7 +337,6 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
   void _startPayment() {
     final state = context.read<ProfileBloc>().state;
     final slotBookingstate = context.read<SlotBookingBloc>().state;
-    log("${state.basicData.toJson()}");
     Map<String, dynamic> options = {
       'key': "rzp_live_BUSmhSPjTh6whJ",
       'amount': sumTotalFee(
@@ -470,7 +347,7 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
       'name': "Philip's Piano Academy",
       'description': 'Payment for participation in your music class.',
       'prefill': {
-        'contact': " ${state.basicData.mobile}",
+        'contact': "${state.basicData.mobile}",
         'email': '${state.basicData.email}'
       },
       'external': {'wallets': []},
@@ -492,6 +369,168 @@ class _FeeDetailsViewState extends State<FeeDetailsView> {
   void dispose() {
     super.dispose();
     _razorpay!.clear();
+  }
+
+  bool isToday(String day) {
+    var now = DateTime.now();
+    int dayOfWeek = now.weekday;
+    List<String> weekdays = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
+    String weekdayName = weekdays[dayOfWeek - 1];
+    return weekdayName == day;
+  }
+
+  Widget _proceedButton() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return PrimaryButton(
+          onPressed: () {
+            if (isToday(widget.slotBookingModel.day!)) {
+              if (isDateEqual(DateTime.now(), parseDate(dateController.text))) {
+                if (isTimeAfterNow(widget.slotBookingModel.slote!)) {
+                  print("to day after");
+                  showTermsAndConditionsDialog(onTap: () {
+                    if (state.paymentStatusData.onlinepayStatus == "Disabled") {
+                      final state = context.read<SlotBookingBloc>().state;
+                      final params = PmSlotBookingModel(
+                          deposit: "${state.feeDetails.deposit}",
+                          extraFee: "${state.feeDetails.extraFee!.round()}",
+                          fee: "${state.feeDetails.fee!.round()}",
+                          joiningDate: DateFormat("yyyy-MM-dd").format(
+                              DateTime.parse(state.feeDetails.joiningDate!)),
+                          paidAmount:
+                              "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!)).round()}",
+                          payType: widget.slotBookingModel.payType,
+                          paymentMethod: "Offline",
+                          planId: widget.slotBookingModel.planId.toString(),
+                          referenceId: "reference",
+                          sloteId: widget.slotBookingModel.slotId.toString(),
+                          validFrom: "${state.feeDetails.validFrom}",
+                          validTo: "${state.feeDetails.validTo}");
+                      log("${params.toJson()}");
+                      context
+                          .read<SlotBookingBloc>()
+                          .add(BookingSlotEvent(params: params));
+                    } else {
+                      _startPayment();
+                    }
+                  });
+                } else {
+                  print("to day before");
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      backgroundColor: AppColors.redColor,
+                      content: Text(
+                        "This Slot unavailable today. Try another date.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      )));
+                }
+              } else {
+                print("goo");
+                showTermsAndConditionsDialog(onTap: () {
+                  if (state.paymentStatusData.onlinepayStatus == "Disabled") {
+                    final state = context.read<SlotBookingBloc>().state;
+                    final params = PmSlotBookingModel(
+                        deposit: "${state.feeDetails.deposit}",
+                        extraFee: "${state.feeDetails.extraFee!.round()}",
+                        fee: "${state.feeDetails.fee!.round()}",
+                        joiningDate: DateFormat("yyyy-MM-dd").format(
+                            DateTime.parse(state.feeDetails.joiningDate!)),
+                        paidAmount:
+                            "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!)).round()}",
+                        payType: widget.slotBookingModel.payType,
+                        paymentMethod: "Offline",
+                        planId: widget.slotBookingModel.planId.toString(),
+                        referenceId: "reference",
+                        sloteId: widget.slotBookingModel.slotId.toString(),
+                        validFrom: "${state.feeDetails.validFrom}",
+                        validTo: "${state.feeDetails.validTo}");
+                    log("${params.toJson()}");
+                    context
+                        .read<SlotBookingBloc>()
+                        .add(BookingSlotEvent(params: params));
+                  } else {
+                    _startPayment();
+                  }
+                });
+              }
+            } else {
+              showTermsAndConditionsDialog(onTap: () {
+                if (state.paymentStatusData.onlinepayStatus == "Disabled") {
+                  final state = context.read<SlotBookingBloc>().state;
+                  final params = PmSlotBookingModel(
+                      deposit: "${state.feeDetails.deposit}",
+                      extraFee: "${state.feeDetails.extraFee!.round()}",
+                      fee: "${state.feeDetails.fee!.round()}",
+                      joiningDate: DateFormat("yyyy-MM-dd").format(
+                          DateTime.parse(state.feeDetails.joiningDate!)),
+                      paidAmount:
+                          "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!)).round()}",
+                      payType: widget.slotBookingModel.payType,
+                      paymentMethod: "Offline",
+                      planId: widget.slotBookingModel.planId.toString(),
+                      referenceId: "reference",
+                      sloteId: widget.slotBookingModel.slotId.toString(),
+                      validFrom: "${state.feeDetails.validFrom}",
+                      validTo: "${state.feeDetails.validTo}");
+                  log("${params.toJson()}");
+                  context
+                      .read<SlotBookingBloc>()
+                      .add(BookingSlotEvent(params: params));
+                } else {
+                  _startPayment();
+                }
+              });
+              print("another day");
+            }
+
+            // webhook api for get transaction id
+            /*  final state = context
+                              .read<SlotBookingBloc>()
+                              .state;
+                          final profileState = context
+                              .read<ProfileBloc>()
+                              .state;
+                          log("profileState.basicData.id!.toString()");
+                          context.read<SlotBookingBloc>().add(SlotBookWebhookEvent(
+                              params: PmSloteBookWebhook(
+                                  deposit: num.parse(
+                                      "${state.feeDetails.deposit}"),
+                                  extraFee: num.parse(
+                                      "${state.feeDetails.extraFee}"),
+                                  fee: num.parse(
+                                      "${state.feeDetails.fee}"),
+                                  joiningDate: DateFormat("yyyy-MM-dd")
+                                      .format(DateTime.parse(state
+                                          .feeDetails
+                                          .joiningDate!)),
+                                  paidAmount: num.parse(
+                                      "${sumTotalFee(state.feeDetails.fee ?? 0, state.feeDetails.extraFee ?? 0, num.parse(state.feeDetails.deposit!))}"),
+                                  payType: widget
+                                      .slotBookingModel
+                                      .payType,
+                                  paymentMethod: "Online",
+                                  planId: widget
+                                      .slotBookingModel
+                                      .planId,
+                                  sloteId: widget.slotBookingModel.slotId,
+                             validFrom: "${state.feeDetails.validFrom}",
+                            validTo: "${state.feeDetails.validTo}",
+                            transactionId: "#TRXPAID${profileState.basicData.id!}"))); */
+          },
+          label: 'Proceed',
+          backgroundColor: AppColors.primaryColor,
+          labelColor: AppColors.secondaryColor,
+        );
+      },
+    );
   }
 }
 

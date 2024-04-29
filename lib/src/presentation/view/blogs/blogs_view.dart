@@ -8,6 +8,7 @@ import 'package:music_app/src/domain/models/response_models/blog_model/blog.dart
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class BlogsView extends StatefulWidget {
   const BlogsView({super.key});
@@ -21,6 +22,7 @@ class _BlogsViewState extends State<BlogsView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: CustomAppBar(title: "Latest Blogs"),
       backgroundColor: AppColors.secondaryColor,
       body: SizedBox(
           height: kSize.height,
@@ -30,25 +32,6 @@ class _BlogsViewState extends State<BlogsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: kSize.height * .05,
-                ),
-                CustomBackButton(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                SizedBox(
-                  height: kSize.height * 0.028,
-                ),
-                Center(
-                  child: Text(
-                    'Latest Blogs',
-                    style: AppTypography.dmSansMedium.copyWith(
-                        color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.0284),
-                  ),
-                ),
                 SizedBox(
                   height: kSize.height * 0.0189,
                 ),
@@ -92,88 +75,93 @@ class _BlogsViewState extends State<BlogsView> {
       padding: EdgeInsets.symmetric(
           vertical: kSize.height * 0.0236, horizontal: kSize.width * 0.044),
       decoration: BoxDecoration(
+          // color: Colors.red,
           borderRadius: BorderRadius.circular(kSize.height * 0.0236),
           border: Border.all(color: AppColors.primaryColor)),
-      child: Row(children: [
-        Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(kSize.height * 0.0236)),
-            child: Container(
-                width: kSize.height * 0.15640,
-                height: kSize.height * 0.15640,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(kSize.height * 0.0236)),
-                child: Image.network(
-                  "https://philipspianoacademy.erebs.in${blogData.image}",
+      child: Row(
+        children: [
+          Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(kSize.height * 0.0236)),
+              child: Container(
+                  width: kSize.height * 0.13,
                   height: kSize.height * 0.15640,
-                  fit: BoxFit.cover,
-                ))),
-        SizedBox(
-          width: kSize.width * 0.022,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              /*  '11/11/2023' */ DateFormat("dd/MM/yyyy")
-                  .format(DateTime.parse("${blogData.createdAt}")),
-              style: AppTypography.dmSansRegular.copyWith(
-                  color: AppColors.textGreyColor,
-                  fontSize: kSize.height * 0.0118),
-            ),
-            SizedBox(
-              width: kSize.width * .4,
-              child: Text(
-                /*      'Music is new type of relief' */ blogData.title ?? "",
-                maxLines: 2,
-                style: AppTypography.dmSansMedium.copyWith(
-                    color: AppColors.primaryColor,
-                    fontSize: kSize.height * 0.0195),
-              ),
-            ),
-            SizedBox(
-              width: kSize.width * .4,
-              child: Text(
-                blogData.details!.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ""),
-                maxLines: 4,
-                style: AppTypography.dmSansMedium.copyWith(
-                    color: AppColors.primaryColor,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(kSize.height * 0.0236)),
+                  child: Image.network(
+                    "https://philipspianoacademy.erebs.in${blogData.image}",
+                    height: kSize.height * 0.15640,
+                    fit: BoxFit.cover,
+                  ))),
+          SizedBox(
+            width: kSize.width * 0.022,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                /*  '11/11/2023' */ DateFormat("dd/MM/yyyy")
+                    .format(DateTime.parse("${blogData.createdAt}")),
+                style: AppTypography.dmSansRegular.copyWith(
+                    color: AppColors.textGreyColor,
                     fontSize: kSize.height * 0.0118),
               ),
-            ),
-            InkWell(
-              highlightColor: AppColors.transparent,
-              splashColor: AppColors.transparent,
-              onTap: () {
-                Navigator.pushNamed(context, RouterConstants.blogDetailsRoute,
-                    arguments: blogData);
-              },
-              child: Align(
-                widthFactor: 1.8,
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: kSize.height * .01,
-                      horizontal: kSize.width * .06),
-                  decoration: BoxDecoration(
+              SizedBox(
+                width: kSize.width * .4,
+                child: Text(
+                  /*      'Music is new type of relief' */ blogData.title ?? "",
+                  maxLines: 2,
+                  style: AppTypography.dmSansMedium.copyWith(
                       color: AppColors.primaryColor,
-                      borderRadius:
-                          BorderRadius.circular(kSize.height * 0.118)),
-                  child: Text(
-                    "View Blog",
-                    style: AppTypography.dmSansMedium.copyWith(
-                        color: AppColors.secondaryColor,
-                        fontSize: kSize.height * 0.0118),
-                  ),
+                      fontSize: kSize.height * 0.0195),
                 ),
               ),
-            )
-          ],
-        ),
-      ]),
+              SizedBox(
+                width: kSize.width * .4,
+                child: Text(
+                  blogData.details!.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ""),
+                  maxLines: 3,
+                  style: AppTypography.dmSansMedium.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.0118),
+                ),
+              ),
+              SizedBox(height: 10),
+              InkWell(
+                highlightColor: AppColors.transparent,
+                splashColor: AppColors.transparent,
+                onTap: () {
+                  Navigator.pushNamed(context, RouterConstants.blogDetailsRoute,
+                      arguments: blogData);
+                },
+                child: Align(
+                  widthFactor: 1.8,
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: kSize.height * .01,
+                        horizontal: kSize.width * .06),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius:
+                            BorderRadius.circular(kSize.height * 0.118)),
+                    child: Text(
+                      "View Blog",
+                      style: AppTypography.dmSansMedium.copyWith(
+                          color: AppColors.secondaryColor,
+                          fontSize: kSize.height * 0.0118),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:music_app/src/domain/core/api_key/api_key.dart';
 import 'package:music_app/src/domain/core/failures/api_auth_failure.dart';
 import 'package:music_app/src/domain/core/failures/api_failure.dart';
 import 'package:music_app/src/domain/core/internet_service/i_base_client.dart';
@@ -23,8 +22,10 @@ class InternetHelper extends IBaseClient {
     required Map<String, dynamic> body,
   }) async {
     try {
-      final response = await client.post(Uri.parse(url),
-          body: body, headers: {'tokenvalid': ApiKey.loginToken});
+      final response = await client.post(
+        Uri.parse(url),
+        body: body,
+      );
       if (response.body.isEmpty) {
         throw ApiFailure(message: 'no data found');
       }

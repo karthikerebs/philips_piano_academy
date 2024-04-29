@@ -6,9 +6,9 @@ import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionView extends StatefulWidget {
@@ -30,25 +30,7 @@ class _TransactionViewState extends State<TransactionView> {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.secondaryColor,
-        leadingWidth: kSize.width * 0.12,
-        elevation: 0,
-        forceMaterialTransparency: true,
-        centerTitle: true,
-        title: Text(
-          "Transaction History",
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Payment History"),
       body: SizedBox(
           height: kSize.height,
           width: kSize.width,

@@ -7,13 +7,13 @@ import 'package:music_app/src/application/credit_class/credit_class_bloc.dart';
 import 'package:music_app/src/application/paid_class/paid_class_bloc.dart';
 // import 'package:music_app/src/domain/models/response_models/slot_model/slote.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
 import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/view/credit_class_change_date/widgets/select_date_widget.dart';
 import 'package:music_app/src/presentation/view/credit_class_change_date/widgets/select_slote_list.dart';
 import 'package:music_app/src/presentation/view/credit_class_change_date/widgets/upcoming_slote_list.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class ChangeCreditClassView extends StatefulWidget {
   const ChangeCreditClassView({super.key, required this.classId});
@@ -39,20 +39,7 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.secondaryColor,
-        leadingWidth: kSize.width * 0.12,
-        elevation: 0,
-        forceMaterialTransparency: true,
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Credit Class"),
       backgroundColor: AppColors.secondaryColor,
       body: SizedBox(
         height: kSize.height,

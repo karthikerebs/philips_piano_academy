@@ -8,6 +8,8 @@ import 'package:music_app/src/domain/core/internet_service/i_base_client.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_get_fee_details_model/pm_get_fee_details_model.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_get_slote_model/pm_get_slote_model.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_slot_booking_model/pm_slot_booking_model.dart';
+import 'package:music_app/src/domain/models/pm_models/pm_slote_book_webhook/pm_slote_book_webhook.dart';
+import 'package:music_app/src/domain/models/response_models/common_response_model/common_response_model.dart';
 import 'package:music_app/src/domain/models/response_models/fee_details_model/fee_details_model.dart';
 import 'package:music_app/src/domain/models/response_models/plans_model/plans_model.dart';
 import 'package:music_app/src/domain/models/response_models/slot_booking_response_model/slot_booking_response_model.dart';
@@ -83,6 +85,25 @@ class SlotBookingRepository extends ISlotBookingRepository {
       final decode = jsonDecode(response.body) as Map<String, dynamic>;
       if (decode['status_code'] == "01") {
         return FeeDetailsModel.fromJson(decode);
+      } else {
+        throw ApiFailure(message: decode['message']);
+      }
+    } on ApiFailure catch (e) {
+      throw ApiFailure(message: e.toString());
+    } on ApiAuthFailure catch (e) {
+      throw ApiAuthFailure(e.error ?? "");
+    }
+  }
+
+  @override
+  Future<CommonResponseModel> bookSlotWebhook(
+      {required PmSloteBookWebhook params}) async {
+    try {
+      final response = await client.postWithProfile(
+          url: AppUrls.sloteBookingWebhookUrl, body: params.toJson());
+      final decode = jsonDecode(response.body) as Map<String, dynamic>;
+      if (decode['status_code'] == "01") {
+        return CommonResponseModel.fromJson(decode);
       } else {
         throw ApiFailure(message: decode['message']);
       }

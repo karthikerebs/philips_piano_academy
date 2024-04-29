@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/src/application/slot_booking/slot_booking_bloc.dart';
 import 'package:music_app/src/domain/models/response_models/slot_model/slote.dart';
@@ -17,7 +17,6 @@ class SloteList extends StatefulWidget {
   final ValueNotifier<int> isSelectSlot;
   final ValueNotifier<Slote> selectedSlote;
   final String day;
-
   @override
   State<SloteList> createState() => _SloteListState();
 }
@@ -135,3 +134,4 @@ class _SloteListState extends State<SloteList> {
     return selectedSlotId == slotId && selectedDate == date;
   }
 }
+ */

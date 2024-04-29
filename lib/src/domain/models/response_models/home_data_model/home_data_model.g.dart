@@ -24,6 +24,8 @@ HomeDataModel _$HomeDataModelFromJson(Map<String, dynamic> json) =>
       statusCode: json['status_code'] as String?,
       mobile: json['mobile'] as String?,
       email: json['email'] as String?,
+      creditClassCnt: json['credit_class_cnt'] as int?,
+      emergencyCancel: json['emergency_cancel'] as int?,
     );
 
 Map<String, dynamic> _$HomeDataModelToJson(HomeDataModel instance) =>
@@ -40,4 +42,6 @@ Map<String, dynamic> _$HomeDataModelToJson(HomeDataModel instance) =>
       'status_code': instance.statusCode,
       'mobile': instance.mobile,
       'email': instance.email,
+      'emergency_cancel': instance.emergencyCancel,
+      'credit_class_cnt': instance.creditClassCnt,
     };

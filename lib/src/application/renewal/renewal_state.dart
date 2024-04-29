@@ -8,7 +8,8 @@ class RenewalState extends Equatable {
       this.feeDetails = const RenewalFeeDetails(),
       this.requestStatus = const StatusInitial(),
       this.renewalFees = const GetRenewalFeesModel(),
-      this.checkRenewalStatus = const StatusInitial()});
+      this.checkRenewalStatus = const StatusInitial(),
+      this.renewalWebhookStatus = const StatusInitial()});
   final Status status;
   final List<Plan> planList;
   final Status feeDetailStatus;
@@ -16,6 +17,7 @@ class RenewalState extends Equatable {
   final Status requestStatus;
   final GetRenewalFeesModel renewalFees;
   final Status checkRenewalStatus;
+  final Status renewalWebhookStatus;
   @override
   List<Object> get props => [
         status,
@@ -25,7 +27,8 @@ class RenewalState extends Equatable {
         feeDetailStatus,
         renewalFees,
         renewalFees,
-        checkRenewalStatus
+        checkRenewalStatus,
+        renewalWebhookStatus
       ];
   RenewalState copyWith(
       {Status? status,
@@ -34,7 +37,8 @@ class RenewalState extends Equatable {
       RenewalFeeDetails? feeDetails,
       Status? requestStatus,
       GetRenewalFeesModel? renewalFees,
-      Status? checkRenewalStatus}) {
+      Status? checkRenewalStatus,
+      Status? renewalWebhookStatus}) {
     return RenewalState(
         status: status ?? this.status,
         planList: planList ?? this.planList,
@@ -42,6 +46,8 @@ class RenewalState extends Equatable {
         feeDetails: feeDetails ?? this.feeDetails,
         requestStatus: requestStatus ?? this.requestStatus,
         renewalFees: renewalFees ?? this.renewalFees,
-        checkRenewalStatus: checkRenewalStatus ?? this.checkRenewalStatus);
+        checkRenewalStatus: checkRenewalStatus ?? this.checkRenewalStatus,
+        renewalWebhookStatus:
+            renewalWebhookStatus ?? this.renewalWebhookStatus);
   }
 }

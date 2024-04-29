@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,19 +28,20 @@ class _PrivacyPolicyViewState extends State<PrivacyPolicyView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: AppColors.blackColor,
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           centerTitle: true,
           elevation: 0,
           leadingWidth: kSize.width * .1,
           leading: CustomBackButton(
-              color: AppColors.secondaryColor,
+              color: const Color.fromARGB(255, 0, 0, 0),
               onTap: () {
                 Navigator.pop(context);
               }),
           title: Text('Privacy Policy',
               style: AppTypography.dmSansRegular.copyWith(
-                  color: AppColors.secondaryColor,
+                  color: const Color.fromARGB(255, 0, 0, 0),
                   fontSize: kSize.height * 0.028)),
         ),
         body: WebViewWidget(

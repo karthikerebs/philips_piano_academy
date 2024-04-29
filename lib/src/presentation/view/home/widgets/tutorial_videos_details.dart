@@ -16,12 +16,15 @@ class TutorialVideoDetails extends StatelessWidget {
       padding: EdgeInsets.only(top: 0, bottom: kSize.height * .13),
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        print(
+            "https://img.youtube.com/vi/${getIdFromUrl(state.videoList[index].link ?? "")}/0.jpg");
         return Container(
           margin: EdgeInsets.only(bottom: kSize.height * 0.0094),
           width: kSize.width,
           padding: EdgeInsets.symmetric(
               vertical: kSize.height * 0.0236, horizontal: kSize.width * 0.044),
           decoration: BoxDecoration(
+              // color: Colors.red,
               borderRadius: BorderRadius.circular(kSize.height * 0.0236),
               border: Border.all(color: AppColors.primaryColor)),
           child: Row(children: [
@@ -33,7 +36,7 @@ class TutorialVideoDetails extends StatelessWidget {
                     borderRadius: BorderRadius.circular(kSize.height * 0.0236)),
                 child: Image.network(
                   "https://img.youtube.com/vi/${getIdFromUrl(state.videoList[index].link ?? "")}/0.jpg",
-                  height: kSize.height * 0.15640,
+                  // height: kSize.height * 0.15640,
                   fit: BoxFit.cover,
                 ) /*  Image.asset(
                   AppImages.blogBg,
@@ -48,13 +51,14 @@ class TutorialVideoDetails extends StatelessWidget {
                 SizedBox(
                   width: kSize.width * .3,
                   child: Text(
+                    overflow: TextOverflow.ellipsis,
                     /* 'Getting Started with Rythm' */ state
                             .videoList[index].title ??
                         '',
                     maxLines: 2,
                     style: AppTypography.dmSansMedium.copyWith(
                         color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.0165),
+                        fontSize: kSize.height * 0.015),
                   ),
                 ),
                 SizedBox(height: kSize.height * .01),
@@ -76,7 +80,7 @@ class TutorialVideoDetails extends StatelessWidget {
                       "Watch Video",
                       style: AppTypography.dmSansMedium.copyWith(
                           color: AppColors.secondaryColor,
-                          fontSize: kSize.height * 0.0118),
+                          fontSize: kSize.height * 0.01),
                     ),
                   ),
                 ),

@@ -11,7 +11,9 @@ class PaidClassState extends Equatable {
       this.upcomingSlotStatus = const StatusInitial(),
       this.paidSloteDetails = const UpcomingPaidSloteModel(),
       this.checkPaidStatus = const StatusInitial(),
-      this.checPaidClassData = const CheckPaidClass()});
+      this.checPaidClassData = const CheckPaidClass(),
+      this.paidWebhookStatus = const StatusInitial(),
+      this.completedClassNote = const CompletedNoteModel()});
   final Status status;
   final Status slotStatus;
   final Status bookStatus;
@@ -22,6 +24,8 @@ class PaidClassState extends Equatable {
   final UpcomingPaidSloteModel paidSloteDetails;
   final Status checkPaidStatus;
   final CheckPaidClass checPaidClassData;
+  final Status paidWebhookStatus;
+  final CompletedNoteModel completedClassNote;
   @override
   List<Object> get props => [
         status,
@@ -33,7 +37,9 @@ class PaidClassState extends Equatable {
         upcomingSlotStatus,
         paidSloteDetails,
         checkPaidStatus,
-        checPaidClassData
+        checPaidClassData,
+        paidWebhookStatus,
+        completedClassNote
       ];
   PaidClassState copyWith(
       {Status? status,
@@ -45,7 +51,9 @@ class PaidClassState extends Equatable {
       Status? upcomingSlotStatus,
       UpcomingPaidSloteModel? paidSloteDetails,
       Status? checkPaidStatus,
-      CheckPaidClass? checPaidClassData}) {
+      CheckPaidClass? checPaidClassData,
+      Status? paidWebhookStatus,
+      CompletedNoteModel? completedClassNote}) {
     return PaidClassState(
         status: status ?? this.status,
         slotDetails: slotDetails ?? this.slotDetails,
@@ -56,6 +64,8 @@ class PaidClassState extends Equatable {
         upcomingSlotStatus: upcomingSlotStatus ?? this.upcomingSlotStatus,
         paidSloteDetails: paidSloteDetails ?? this.paidSloteDetails,
         checkPaidStatus: checkPaidStatus ?? this.checkPaidStatus,
-        checPaidClassData: checPaidClassData ?? this.checPaidClassData);
+        checPaidClassData: checPaidClassData ?? this.checPaidClassData,
+        paidWebhookStatus: paidWebhookStatus ?? this.paidWebhookStatus,
+        completedClassNote: completedClassNote ?? this.completedClassNote);
   }
 }

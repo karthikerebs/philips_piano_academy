@@ -7,13 +7,23 @@ class SlotBookingState extends Equatable {
       this.slotList = const <Slote>[],
       this.feeDetails = const FeeDetailsModel(),
       this.feeDetailStatus = const StatusInitial(),
-      this.slotBookingStatus = const StatusInitial()});
+      this.slotBookingStatus = const StatusInitial(),
+      this.slotBookingWebhookStatus = const StatusInitial()});
+
   final Status status;
+
   final Status feeDetailStatus;
+
   final Status slotBookingStatus;
+
   final List<Plan> planList;
+
   final List<Slote> slotList;
+
   final FeeDetailsModel feeDetails;
+
+  final Status slotBookingWebhookStatus;
+
   @override
   List<Object> get props => [
         status,
@@ -21,21 +31,26 @@ class SlotBookingState extends Equatable {
         slotList,
         feeDetails,
         feeDetailStatus,
-        slotBookingStatus
+        slotBookingStatus,
+        slotBookingWebhookStatus
       ];
+
   SlotBookingState copyWith(
       {Status? status,
       List<Plan>? planList,
       List<Slote>? slotList,
       FeeDetailsModel? feeDetails,
       Status? feeDetailStatus,
-      Status? slotBookingStatus}) {
+      Status? slotBookingStatus,
+      Status? slotBookingWebhookStatus}) {
     return SlotBookingState(
         status: status ?? this.status,
         planList: planList ?? this.planList,
         slotList: slotList ?? this.slotList,
         feeDetailStatus: feeDetailStatus ?? this.feeDetailStatus,
         feeDetails: feeDetails ?? this.feeDetails,
-        slotBookingStatus: slotBookingStatus ?? this.slotBookingStatus);
+        slotBookingStatus: slotBookingStatus ?? this.slotBookingStatus,
+        slotBookingWebhookStatus:
+            slotBookingWebhookStatus ?? this.slotBookingWebhookStatus);
   }
 }

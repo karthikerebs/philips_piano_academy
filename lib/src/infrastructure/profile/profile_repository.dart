@@ -25,6 +25,7 @@ class ProfileRepository extends IProfileRepository {
       final response =
           await client.getWithProfile(url: AppUrls.getProfileDataUrl);
       final decode = jsonDecode(response.data) as Map<String, dynamic>;
+      print(response.data);
       return ProfileModel.fromJson(decode);
     } on ApiFailure catch (e) {
       throw ApiFailure(message: e.toString());

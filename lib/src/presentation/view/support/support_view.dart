@@ -4,6 +4,7 @@ import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class SupportView extends StatefulWidget {
   const SupportView({super.key});
@@ -19,25 +20,12 @@ class _SupportViewState extends State<SupportView> {
     return Scaffold(
       floatingActionButton: floatingActionButton(kSize),
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        backgroundColor: AppColors.secondaryColor,
-        leadingWidth: kSize.width * 0.12,
-        elevation: 0,
-        forceMaterialTransparency: true,
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBar(title: "Support"),
       body: SizedBox(
           height: kSize.height,
           width: kSize.width,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.05),
+            padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.06),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,20 +37,20 @@ class _SupportViewState extends State<SupportView> {
                         color: AppColors.greyColor,
                         fontSize: kSize.height * 0.0189)),
                 SizedBox(height: kSize.height * 0.00710),
-                Text('+91 93807 43824',
+                Text('+91 9380743824',
                     style: AppTypography.dmSansMedium.copyWith(
                         color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.026)),
+                        fontSize: kSize.height * 0.023)),
                 SizedBox(height: kSize.height * 0.023),
                 Text('Email',
                     style: AppTypography.dmSansRegular.copyWith(
                         color: AppColors.greyColor,
                         fontSize: kSize.height * 0.0189)),
                 SizedBox(height: kSize.height * 0.00710),
-                Text('PHILIPS.PIANOACADEMY@GMAIL.COM',
+                Text('philips.pianoacademy@gmail.com',
                     style: AppTypography.dmSansMedium.copyWith(
                         color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.026)),
+                        fontSize: kSize.height * 0.023)),
                 SizedBox(height: kSize.height * 0.023),
                 Text('Whatsapp',
                     style: AppTypography.dmSansRegular.copyWith(
@@ -72,7 +60,7 @@ class _SupportViewState extends State<SupportView> {
                 Text('+91 8892573158',
                     style: AppTypography.dmSansMedium.copyWith(
                         color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.026)),
+                        fontSize: kSize.height * 0.023)),
                 SizedBox(height: kSize.height * 0.018),
               ],
             ),

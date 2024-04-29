@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
+      // DeviceOrientation.portraitDown,
     ]);
     return MultiBlocProvider(
       providers: [
@@ -48,13 +48,13 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => getIt<RenewalBloc>()),
       ],
       child: MaterialApp(
-        title: 'Philips Piano Academy',
-        navigatorKey: navigatorKey,
-        initialRoute: RouterConstants.splashRoute,
-        onGenerateRoute: AppRouter.generateRoute,
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-      ),
+          title: 'Philips Piano Academy',
+          navigatorKey: navigatorKey,
+          initialRoute: RouterConstants.splashRoute,
+          onGenerateRoute: AppRouter.generateRoute,
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.lightTheme),
     );
   }
 }

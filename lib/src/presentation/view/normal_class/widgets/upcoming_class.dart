@@ -140,7 +140,7 @@ class _UpComingClassDetailsState extends State<UpComingClassDetails> {
             : const SizedBox(),
         Padding(
           padding: EdgeInsets.symmetric(
-              vertical: kSize.height * 0.0343, horizontal: kSize.width * 0.097),
+              vertical: kSize.height * 0.0343, horizontal: kSize.width * 0.06),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

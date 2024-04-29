@@ -44,7 +44,7 @@ class _RegisterViewState extends State<RegisterView> {
   final formKey = GlobalKey<FormState>();
   List<String> classList = <String>[
     'Online',
-    'Offline',
+    'Offline ( 	Koramangala , Haralur )',
   ];
   String classDropdownValue = "";
   String branchDropdownValue = "";
@@ -381,7 +381,7 @@ class _RegisterViewState extends State<RegisterView> {
                                                     dropdownValue.value =
                                                         selectedIndex;
                                                     if (dropdownValue.value ==
-                                                        "Offline") {
+                                                        "Offline ( 	Koramangala , Haralur )") {
                                                       context.read<AuthBloc>().add(
                                                           const GetBrachesEvent());
                                                     }
@@ -397,7 +397,8 @@ class _RegisterViewState extends State<RegisterView> {
                                                 SizedBox(
                                                     height:
                                                         kSize.height * .015),
-                                                dropdownValue.value == "Offline"
+                                                dropdownValue.value ==
+                                                        "Offline ( 	Koramangala , Haralur )"
                                                     ? BlocConsumer<AuthBloc,
                                                         AuthState>(
                                                         listener:
@@ -506,7 +507,7 @@ class _RegisterViewState extends State<RegisterView> {
                                                                     )));
                                                       } else if (classController
                                                                   .text ==
-                                                              "Offline" &&
+                                                              "Offline ( 	Koramangala , Haralur )" &&
                                                           branchController
                                                               .text.isEmpty) {
                                                         ScaffoldMessenger.of(
@@ -530,7 +531,7 @@ class _RegisterViewState extends State<RegisterView> {
                                                                     )));
                                                       } else {
                                                         final param = PmRegisterModel(
-                                                            username: userNameController
+                                                            username: userNameController  
                                                                 .text,
                                                             name: firstNameController
                                                                     .text +
@@ -557,8 +558,11 @@ class _RegisterViewState extends State<RegisterView> {
                                                                     .text,
                                                             branch:
                                                                 branchDropdownValue,
-                                                            classMode:
-                                                                classController
+                                                            classMode: classController
+                                                                        .text ==
+                                                                    "Offline ( 	Koramangala , Haralur )"
+                                                                ? "Offline"
+                                                                : classController
                                                                     .text);
                                                         context
                                                             .read<AuthBloc>()

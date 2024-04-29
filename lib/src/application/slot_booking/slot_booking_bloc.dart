@@ -9,6 +9,7 @@ import 'package:music_app/src/domain/core/failures/api_failure.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_get_fee_details_model/pm_get_fee_details_model.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_get_slote_model/pm_get_slote_model.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_slot_booking_model/pm_slot_booking_model.dart';
+import 'package:music_app/src/domain/models/pm_models/pm_slote_book_webhook/pm_slote_book_webhook.dart';
 import 'package:music_app/src/domain/models/response_models/fee_details_model/fee_details_model.dart';
 import 'package:music_app/src/domain/models/response_models/plans_model/plan.dart';
 import 'package:music_app/src/domain/models/response_models/slot_model/slote.dart';
@@ -26,6 +27,7 @@ class SlotBookingBloc extends Bloc<SlotBookingEvent, SlotBookingState> {
     on<GetFeeDetailsEvent>(_getFeeDetails);
     on<BookingSlotEvent>(_slotBooking);
     on<CleanFeeDetailsEvent>(_clean);
+    on<SlotBookWebhookEvent>(_slotBookingWebhook);
   }
   FutureOr<void> _getPlanList(
       GetPlansEvent event, Emitter<SlotBookingState> emit) async {
@@ -105,6 +107,27 @@ class SlotBookingBloc extends Bloc<SlotBookingEvent, SlotBookingState> {
     emit(state.copyWith(
         feeDetailStatus: const StatusInitial(),
         feeDetails: const FeeDetailsModel()));
+  }
+
+  FutureOr<void> _slotBookingWebhook(
+      SlotBookWebhookEvent event, Emitter<SlotBookingState> emit) async {
+    try {
+      emit(state.copyWith(slotBookingWebhookStatus: StatusLoading()));
+      final res =
+          await _iSlotBookingRepository.bookSlotWebhook(params: event.params);
+      if (res.statusCode == '01') {
+        emit(state.copyWith(slotBookingWebhookStatus: StatusSuccess()));
+      } else {
+        emit(state.copyWith(
+            slotBookingWebhookStatus:
+                StatusFailure(res.message ?? "Request fail")));
+      }
+    } on ApiFailure catch (e) {
+      emit(state.copyWith(slotBookingWebhookStatus: StatusFailure(e.message)));
+    } on ApiAuthFailure catch (e) {
+      emit(state.copyWith(
+          slotBookingWebhookStatus: StatusAuthFailure(e.error ?? "")));
+    }
   }
 
   final ISlotBookingRepository _iSlotBookingRepository;

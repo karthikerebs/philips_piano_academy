@@ -1,8 +1,5 @@
 import 'dart:developer';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
@@ -30,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     context.read<HomeBloc>().add(const GetNotificationEvent());
-    checkRenewel();
+    isCheckRequestRenewal();
     super.initState();
   }
 
@@ -55,9 +52,9 @@ class _HomeViewState extends State<HomeView> {
             builder: (context, dynamic, child) {
               return BlocConsumer<HomeBloc, HomeState>(
                 listenWhen: (previous, current) =>
-                    previous.notificationStatus != current.notificationStatus,
+                    previous.status != current.status,
                 listener: (context, state) {
-                  if (state.notificationStatus is StatusAuthFailure) {
+                  if (state.status is StatusAuthFailure) {
                     log("${state.homeData}");
                     CustomMessage(
                             context: context,
@@ -92,11 +89,11 @@ class _HomeViewState extends State<HomeView> {
                                 minHeight: 150,
                                 maxHeight: 150,
                                 child: classDetails(kSize))),
-                        SliverPersistentHeader(
+                        /*  SliverPersistentHeader(
                             delegate: SliverAppBarDelegate(
                                 minHeight: 50,
                                 maxHeight: 50,
-                                child: classSection(kSize))),
+                                child: classSection(kSize))), */
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: 15,
@@ -162,19 +159,14 @@ class _HomeViewState extends State<HomeView> {
                         SliverToBoxAdapter(
                           child: SizedBox(height: kSize.height * .03),
                         ),
-                        isRenewPlan.value
+                        SliverToBoxAdapter(
+                            child: emergencyAndCreditClassDetails(kSize)),
+                        SliverToBoxAdapter(
+                          child: SizedBox(height: kSize.height * .03),
+                        ),
+                        isCheckRequestRenewal()
                             ? SliverToBoxAdapter(child: renewalRemainder(kSize))
                             : SliverToBoxAdapter(child: SizedBox()),
-                        /*           SliverToBoxAdapter(child:
-                            BlocBuilder<InstallmentBloc, InstallmentState>(
-                          builder: (context, state) {
-                            if (state.pendingInstallment.isNotEmpty) {
-                              return paymentdue(kSize);
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        )), */
                         SliverList(
                             delegate: SliverChildListDelegate([
                           Padding(
@@ -183,6 +175,7 @@ class _HomeViewState extends State<HomeView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: kSize.height * .015),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -334,7 +327,7 @@ class _HomeViewState extends State<HomeView> {
                                     fontSize: kSize.height * 0.0355))
                             : Text("There are no classes scheduled!")
                         : Text("There are no classes scheduled!"),
-                    SizedBox(height: kSize.height * 0.0497),
+                    // SizedBox(height: kSize.height * 0.0497),
                   ],
                 )
               ]),
@@ -361,46 +354,28 @@ class _HomeViewState extends State<HomeView> {
           padding: EdgeInsets.symmetric(
               horizontal: kSize.width * .04, vertical: kSize.height * .02),
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(.3),
+                    blurRadius: 3,
+                    spreadRadius: 3,
+                    offset: const Offset(0, 4)),
+              ],
               borderRadius: BorderRadius.circular(kSize.height * .01),
-              color: AppColors.redColor.withOpacity(.05),
-              border: Border.all(color: AppColors.redColor.withOpacity(.4))),
+              // color: AppColors.redColor.withOpacity(.05),
+              color: Colors.white,
+              border: Border.all(
+                  color: AppColors.redColor.withOpacity(.4), width: 2)),
           child: Row(
             children: [
               Flexible(
                 child: Text(
-                    'Time to renew!\n Ensure uninterrupted access by renewing your subscription.',
+                    'Your account subscription has expired. Please renew by clicking here to regain access to our services.',
                     textAlign: TextAlign.center,
-                    style: AppTypography.dmSansMedium.copyWith(
-                        color: AppColors.primaryColor,
+                    style: AppTypography.dmSansRegular.copyWith(
+                        color: const Color.fromARGB(255, 255, 0, 0),
                         fontSize: kSize.height * 0.02)),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: kSize.height * .01),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: kSize.width * .04,
-                        vertical: kSize.height * .02),
-                    decoration: BoxDecoration(
-                        color: AppColors.redColor.withOpacity(.2),
-                        borderRadius:
-                            BorderRadius.circular(kSize.height * .01)),
-                    alignment: Alignment.center,
-                    child: Text(
-                        differenceInDays < 9
-                            ? '0${differenceInDays}'
-                            : "${differenceInDays}",
-                        style: AppTypography.dmSansBold.copyWith(
-                            color: AppColors.blackColor,
-                            fontSize: kSize.height * 0.026)),
-                  ),
-                  Text('DAYS',
-                      style: AppTypography.dmSansBold.copyWith(
-                          color: AppColors.blackColor,
-                          fontSize: kSize.height * 0.016))
-                ],
-              )
             ],
           )),
     );
@@ -418,6 +393,26 @@ class _HomeViewState extends State<HomeView> {
     } else {
       isRenewPlan.value = false;
     }
+  }
+
+  // bool isCheckRequestRenewal() {
+  //   final state = context.read<ProfileBloc>().state;
+  //   final validTo = state.profileData.profileDetails?.validTo;
+  //   if (validTo != null) {
+  //     return DateFormat("yyyy-MM-dd").parse(validTo).isBefore(DateTime.now());
+  //   } else {
+  //     // Handle the case where profile data is not available
+  //     return false;
+  //   }
+  // }
+
+  bool isCheckRequestRenewal() {
+    final state = context.read<ProfileBloc>().state;
+    final DateTime validTo = DateFormat("yyyy-MM-dd")
+        .parse(state.profileData.profileDetails!.validTo!);
+    // .parse("2025-12-31");
+    DateTime currentDate = DateTime.now();
+    return validTo.isBefore(currentDate);
   }
 
   Widget paymentdue(Size kSize) {
@@ -453,78 +448,89 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget classSection(Size kSize) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: kSize.width * .1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          FooterButton(
-            padding: EdgeInsets.symmetric(horizontal: 34),
-            label: 'Book a Slot',
-            onPressed: () {
-              Navigator.pushNamed(context, RouterConstants.creditClassRoute);
-            },
-          ),
-          FooterButton(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            label: 'Cancel Class',
-            onPressed: () {
-              Navigator.pushNamed(context, RouterConstants.normalClassRoute);
-            },
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        FooterButton(
+          // padding: EdgeInsets.symmetric(horizontal: 0),
+          label: 'Book a Slot',
+          fontSize: 10,
+          onPressed: () {
+            Navigator.pushNamed(context, RouterConstants.creditClassRoute);
+          },
+        ),
+        FooterButton(
+          // padding: EdgeInsets.symmetric(horizontal: 0),
+          label: 'Cancel Class',
+          fontSize: 10,
+          onPressed: () {
+            Navigator.pushNamed(context, RouterConstants.normalClassRoute);
+          },
+        ),
+      ],
     );
   }
 
-  Future<void> buildDialog() async {
-    await Future.delayed(Duration.zero).then((value) {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) {
-            return PopScope(
-              onPopInvoked: (value) {
-                // Navigator.pop(context);
-                SystemNavigator.pop();
-              },
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Dialog(
-                    alignment: Alignment.center,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0)),
-                    backgroundColor: Colors.black.withOpacity(0.5),
-                    child: Container(
-                        height: 130,
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(14),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Success',
-                              style: AppTypography.dmSansBold.copyWith(
-                                  fontSize: 16, color: AppColors.blackColor),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Your slot is booked!.\n You will be notified once the admin approves your booking.',
-                              textAlign: TextAlign.center,
-                              style: AppTypography.dmSansRegular.copyWith(
-                                  fontSize: 14, color: AppColors.blackColor),
-                            ),
-                          ],
-                        )),
-                  )),
-            );
-          });
-    });
-  }
-
-  void setDialog() {
-    final state = context.read<HomeBloc>().state;
-    if (state.homeData.approval == 'Pending') {
-      buildDialog();
-    }
+  Widget emergencyAndCreditClassDetails(Size kSize) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 35),
+          child: Container(
+            width: kSize.width,
+            padding: EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+            ),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Credit Class Count :',
+                  style: AppTypography.dmSansMedium.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.02)),
+              SizedBox(height: 5),
+              Text(
+                  '• Pending Credits : ${state.homeData.creditClassCnt != null ? state.homeData.creditClassCnt : "0"}',
+                  style: AppTypography.dmSansRegular.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.015)),
+              SizedBox(height: 10),
+              FooterButton(
+                padding: EdgeInsets.symmetric(horizontal: 22),
+                label: 'Book a Slot',
+                fontSize: 10,
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, RouterConstants.creditClassRoute);
+                },
+              ),
+              SizedBox(height: 10),
+              Text('Emergency Cancel Count :',
+                  style: AppTypography.dmSansMedium.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.02)),
+              SizedBox(height: 5),
+              Text(
+                  '• Emergency Cancellations : ${state.homeData.emergencyCancel != null ? state.homeData.emergencyCancel : "0"}',
+                  style: AppTypography.dmSansRegular.copyWith(
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.015)),
+              SizedBox(height: 10),
+              FooterButton(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                label: 'Cancel Class',
+                fontSize: 10,
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, RouterConstants.normalClassRoute);
+                },
+              ),
+            ]),
+          ),
+        );
+      },
+    );
   }
 }

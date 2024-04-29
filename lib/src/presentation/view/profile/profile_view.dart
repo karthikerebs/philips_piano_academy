@@ -29,8 +29,8 @@ class _ProfileViewState extends State<ProfileView> {
       width: kSize.width,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: kSize.height * .07),
+        child: ListView(children: [
+          // SizedBox(height: kSize.height * .07),
           BlocConsumer<ProfileBloc, ProfileState>(
             listener: (context, state) {
               if (state.status is StatusAuthFailure) {
@@ -45,14 +45,16 @@ class _ProfileViewState extends State<ProfileView> {
             },
             builder: (context, state) {
               return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    alignment: Alignment.bottomCenter,
-                    clipBehavior: Clip.antiAlias,
-                    height: kSize.height * 0.1218,
-                    width: kSize.height * 0.1218,
+                    // alignment: Alignment.center,
+                    clipBehavior: Clip.hardEdge,
+                    height: kSize.height * 0.2,
+                    // width: kSize.height * 0.1218,
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade400, shape: BoxShape.circle),
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        shape: BoxShape.circle),
                     child: state.profileData.profileDetails!.photo == null
                         ? /* Image.asset(AppImages.placeHolder,
                             height: 65,
@@ -66,15 +68,15 @@ class _ProfileViewState extends State<ProfileView> {
                             fit: BoxFit.cover,
                             "${AppUrls.imageBaseUrl}${state.profileData.profileDetails!.photo}"),
                   ),
+                  SizedBox(width: kSize.width * 0.054),
+                  // Spacer(),
                   SizedBox(
-                    width: kSize.width * 0.044,
-                  ),
-                  SizedBox(
-                    width: kSize.width * .6,
+                    width: kSize.width * .4,
                     height: kSize.height * .13,
                     child: FittedBox(
                       alignment: Alignment.topLeft,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RichText(
@@ -131,9 +133,9 @@ class _ProfileViewState extends State<ProfileView> {
               );
             },
           ),
-          SizedBox(
-            height: kSize.height * 0.02,
-          ),
+          // SizedBox(
+          //   height: kSize.height * 0.01,
+          // ),
           CustomListTile(
               label: 'Basic Details',
               image: AppImages.basic,

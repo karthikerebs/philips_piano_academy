@@ -7,6 +7,7 @@ import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/application/home/home_bloc.dart';
 import 'package:music_app/src/application/paid_class/paid_class_bloc.dart';
+import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/domain/models/response_models/upcoming_paid_slote_model/upcoming_paid_slote_model.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
@@ -147,7 +148,20 @@ class _PaidClassFeeDetailsState extends State<PaidClassFeeDetails> {
                         } else {
                           if (state.checkPaidStatus is StatusSuccess) {
                             _startPayment(state.paidSloteDetails);
-                          } else {
+                            // webhook api for get transaction id
+                            /*   final profileState =
+                                context.read<ProfileBloc>().state;
+                            log("profileState.basicData.id!.toString()");
+                            context.read<PaidClassBloc>().add(PaidWebhookEvent(
+                                params: PmPaidWebhook(
+                                    classDate: formattedDate(widget.date),
+                                    paidAmount: num.parse(
+                                        state.paidSloteDetails.fee ?? ""),
+                                    sloteId: int.parse(widget.slotId),
+                                    referenceId: "ReferenceId",
+                                    transactionId:
+                                        "#TRXPAID${profileState.basicData.id!}"))); */
+                          } else if (state.checkPaidStatus is StatusFailure) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: AppColors.redColor,
                                 behavior: SnackBarBehavior.floating,
@@ -170,6 +184,7 @@ class _PaidClassFeeDetailsState extends State<PaidClassFeeDetails> {
 
   // Handle payment success
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    log("${response.data}");
     log("Payment success: ${response.paymentId}");
     final state = context.read<PaidClassBloc>().state;
     context.read<PaidClassBloc>().add(BookPaidClassEvent(
@@ -194,7 +209,7 @@ class _PaidClassFeeDetailsState extends State<PaidClassFeeDetails> {
   }
 
   void _startPayment(UpcomingPaidSloteModel paidSloteDetails) {
-    final state = context.read<HomeBloc>().state;
+    final state = context.read<ProfileBloc>().state;
     num amountInPaisa = (num.parse(paidSloteDetails.fee!) * 100).round();
     Map<String, dynamic> options = {
       'key': "rzp_live_BUSmhSPjTh6whJ",
@@ -202,8 +217,8 @@ class _PaidClassFeeDetailsState extends State<PaidClassFeeDetails> {
       'name': "Philip's Piano Academy",
       'description': 'Payment for participation in your music class.',
       'prefill': {
-        'contact': '${state.homeData.mobile}',
-        'email': '${state.homeData.email}'
+        'contact': '${state.basicData.mobile}',
+        'email': '${state.basicData.email}'
       },
       'external': {'wallets': []},
     };

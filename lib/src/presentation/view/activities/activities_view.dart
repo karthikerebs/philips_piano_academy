@@ -8,6 +8,7 @@ import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class ActivitiesView extends StatefulWidget {
   const ActivitiesView({super.key});
@@ -27,6 +28,7 @@ class _ActivitiesViewState extends State<ActivitiesView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: CustomAppBar(title: "Activities"),
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state.activityStatus is StatusAuthFailure) {
@@ -49,24 +51,6 @@ class _ActivitiesViewState extends State<ActivitiesView> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                SizedBox(
-                  height: kSize.height * .08,
-                ),
-                Row(
-                  children: [
-                    CustomBackButton(onTap: () {
-                      Navigator.pop(context);
-                    }),
-                    Spacer(),
-                    Text(
-                      "Activities",
-                      style: AppTypography.dmSansBold.copyWith(
-                          color: AppColors.primaryColor,
-                          fontSize: kSize.height * 0.03),
-                    ),
-                    Spacer(),
-                  ],
-                ),
                 BlocBuilder<ProfileBloc, ProfileState>(
                   builder: (context, state) {
                     if (state.activityStatus is StatusLoading) {

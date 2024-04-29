@@ -52,3 +52,10 @@ class UpcomingCreditSloteEvent extends CreditClassEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetCreditClassNoteEvent extends CreditClassEvent {
+  const GetCreditClassNoteEvent({required this.classId});
+  final String classId;
+  @override
+  List<Object> get props => [classId];
+}

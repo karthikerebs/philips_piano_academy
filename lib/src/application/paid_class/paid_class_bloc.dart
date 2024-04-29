@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,9 @@ import 'package:injectable/injectable.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/domain/core/failures/api_auth_failure.dart';
 import 'package:music_app/src/domain/core/failures/api_failure.dart';
+import 'package:music_app/src/domain/models/pm_models/pm_paid_webhook/pm_paid_webhook.dart';
 import 'package:music_app/src/domain/models/response_models/check_paid_class/check_paid_class.dart';
+import 'package:music_app/src/domain/models/response_models/completed_note_model/completed_note_model.dart';
 import 'package:music_app/src/domain/models/response_models/paid_class_slot_model/paid_class_slot_model.dart';
 import 'package:music_app/src/domain/models/response_models/piad_class_model/paid_class.dart';
 import 'package:music_app/src/domain/paid_class/i_paid_class_repository.dart';
@@ -26,6 +27,8 @@ class PaidClassBloc extends Bloc<PaidClassEvent, PaidClassState> {
     on<CancelPaidClassEvent>(_cancelPaidClass);
     on<UpcomingSloteEvent>(_getUpcomingSlotes);
     on<CheckPaidClassEvent>(_checkPaidClass);
+    on<PaidWebhookEvent>(_paidWebhook);
+    on<GetPaidClassNoteEvent>(_getPaidCompletedNotes);
   }
   FutureOr<void> _getPaidClassList(
       GetPaidClassListEvent event, Emitter<PaidClassState> emit) async {
@@ -135,7 +138,6 @@ class PaidClassBloc extends Bloc<PaidClassEvent, PaidClassState> {
         emit(state.copyWith(
             checkPaidStatus: StatusSuccess(), checPaidClassData: res));
       } else {
-        log("////////////");
         emit(state.copyWith(
             checkPaidStatus: StatusFailure(res.message ?? "Request fail")));
       }
@@ -143,6 +145,42 @@ class PaidClassBloc extends Bloc<PaidClassEvent, PaidClassState> {
       emit(state.copyWith(checkPaidStatus: StatusFailure(e.message)));
     } on ApiAuthFailure catch (e) {
       emit(state.copyWith(checkPaidStatus: StatusAuthFailure(e.error ?? "")));
+    }
+  }
+
+  FutureOr<void> _paidWebhook(
+      PaidWebhookEvent event, Emitter<PaidClassState> emit) async {
+    try {
+      emit(state.copyWith(paidWebhookStatus: StatusLoading()));
+      final res = await _iPaidClassRepository.paidWebhook(params: event.params);
+      if (res.statusCode == '01') {
+        emit(state.copyWith(paidWebhookStatus: StatusSuccess()));
+      } else {
+        emit(state.copyWith(
+            paidWebhookStatus: StatusFailure(res.message ?? "Request fail")));
+      }
+    } on ApiFailure catch (e) {
+      emit(state.copyWith(paidWebhookStatus: StatusFailure(e.message)));
+    } on ApiAuthFailure catch (e) {
+      emit(state.copyWith(paidWebhookStatus: StatusAuthFailure(e.error ?? "")));
+    }
+  }
+
+  FutureOr<void> _getPaidCompletedNotes(
+      GetPaidClassNoteEvent event, Emitter<PaidClassState> emit) async {
+    try {
+      emit(state.copyWith(status: StatusLoading()));
+      final res =
+          await _iPaidClassRepository.getPaidClassNotes(classId: event.classId);
+      if (res.statusCode == '01') {
+        emit(state.copyWith(status: StatusSuccess(), completedClassNote: res));
+      } else {
+        emit(state.copyWith(status: const StatusFailure("Request fail")));
+      }
+    } on ApiFailure catch (e) {
+      emit(state.copyWith(status: StatusFailure(e.message)));
+    } on ApiAuthFailure catch (e) {
+      emit(state.copyWith(status: StatusAuthFailure(e.error ?? "")));
     }
   }
 

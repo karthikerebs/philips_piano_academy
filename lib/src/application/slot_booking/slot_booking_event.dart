@@ -40,3 +40,10 @@ class CleanFeeDetailsEvent extends SlotBookingEvent {
   @override
   List<Object> get props => [];
 }
+
+class SlotBookWebhookEvent extends SlotBookingEvent {
+  const SlotBookWebhookEvent({required this.params});
+  final PmSloteBookWebhook params;
+  @override
+  List<Object> get props => [params];
+}

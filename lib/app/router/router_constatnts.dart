@@ -34,4 +34,6 @@ class RouterConstants {
   static const String termsAndConditionsRoute = '/termsAndConditions';
   static const String activitiesRoute = '/activities';
   static const String paidFeeDeatilsRoute = '/paidFeeDetails';
+  static const String paidClassNoteRoute = '/paidClassNote';
+  static const String creditClassNoteRoute = '/creditClassNote';
 }

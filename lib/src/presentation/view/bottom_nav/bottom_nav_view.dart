@@ -1,11 +1,14 @@
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/home/home_bloc.dart';
 import 'package:music_app/src/application/profile/profile_bloc.dart';
+import 'package:music_app/src/domain/core/pref_key/preference_key.dart';
+import 'package:music_app/src/infrastructure/core/preference_helper.dart';
 import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/constants/strings.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
@@ -65,8 +68,8 @@ class _BottomNavViewState extends State<BottomNavView> {
     return Container(
       height: kSize.height * 0.1,
       color: AppColors.primaryColor,
-      padding: EdgeInsets.symmetric(
-          horizontal: kSize.width * 0.1138, vertical: kSize.height * 0.014),
+      padding:
+          EdgeInsets.symmetric(horizontal: 24, vertical: kSize.height * 0.014),
       alignment: Alignment.center,
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +177,7 @@ class _BottomNavViewState extends State<BottomNavView> {
                         borderRadius: BorderRadius.circular(15.0)),
                     backgroundColor: Colors.black.withOpacity(0.5),
                     child: Container(
-                        height: 130,
+                        height: 150,
                         color: Colors.white,
                         padding: const EdgeInsets.all(14),
                         child: Column(
@@ -191,6 +194,30 @@ class _BottomNavViewState extends State<BottomNavView> {
                               style: AppTypography.dmSansRegular.copyWith(
                                   fontSize: 14, color: AppColors.blackColor),
                             ),
+                            const SizedBox(height: 15),
+                            RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                    text: 'Go to the login screen',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        print(
+                                            'You tapped on the rich text part.');
+                                        PreferenceHelper().setBool(
+                                            key: AppPrefeKeys.logged,
+                                            value: false);
+                                        PreferenceHelper().setString(
+                                            key: AppPrefeKeys.token, value: "");
+                                        Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          RouterConstants.splashRoute,
+                                          (route) => false,
+                                        );
+                                      },
+                                    style: AppTypography.dmSansRegular.copyWith(
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 10,
+                                        color: AppColors.blackColor)))
                           ],
                         )),
                   )),

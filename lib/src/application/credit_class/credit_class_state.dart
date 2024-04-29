@@ -10,7 +10,8 @@ class CreditClassState extends Equatable {
       this.cancelStatus = const StatusInitial(),
       this.upcomingSlotStatus = const StatusInitial(),
       this.dateAndSlotList = const <DatesAndAvailableSlote>[],
-      this.emergencyCancelData = const EmergencyCancelModel()});
+      this.emergencyCancelData = const EmergencyCancelModel(),
+      this.completedClassNote = const CompletedNoteModel()});
   final Status status;
   final List<CreditClass> creditClasses;
   final List<Slote> slotList;
@@ -20,6 +21,7 @@ class CreditClassState extends Equatable {
   final Status upcomingSlotStatus;
   final List<DatesAndAvailableSlote> dateAndSlotList;
   final EmergencyCancelModel emergencyCancelData;
+  final CompletedNoteModel completedClassNote;
   @override
   List<Object> get props => [
         status,
@@ -30,7 +32,8 @@ class CreditClassState extends Equatable {
         cancelStatus,
         upcomingSlotStatus,
         dateAndSlotList,
-        emergencyCancelData
+        emergencyCancelData,
+        completedClassNote
       ];
   CreditClassState copyWith(
       {Status? status,
@@ -41,7 +44,8 @@ class CreditClassState extends Equatable {
       Status? cancelStatus,
       Status? upcomingSlotStatus,
       List<DatesAndAvailableSlote>? dateAndSlotList,
-      EmergencyCancelModel? emergencyCancelData}) {
+      EmergencyCancelModel? emergencyCancelData,
+      CompletedNoteModel? completedClassNote}) {
     return CreditClassState(
         status: status ?? this.status,
         creditClasses: creditClasses ?? this.creditClasses,
@@ -51,6 +55,7 @@ class CreditClassState extends Equatable {
         cancelStatus: cancelStatus ?? this.cancelStatus,
         upcomingSlotStatus: upcomingSlotStatus ?? this.upcomingSlotStatus,
         dateAndSlotList: dateAndSlotList ?? this.dateAndSlotList,
-        emergencyCancelData: emergencyCancelData ?? this.emergencyCancelData);
+        emergencyCancelData: emergencyCancelData ?? this.emergencyCancelData,
+        completedClassNote: completedClassNote ?? this.completedClassNote);
   }
 }

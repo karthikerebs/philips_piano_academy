@@ -63,7 +63,7 @@ class _DropDownButtonState extends State<DropDownButton> {
                     color: selectedCategory.isEmpty
                         ? widget.hintColor
                         : AppColors.primaryColor,
-                    fontSize: kSize.height * .021)),
+                    fontSize: kSize.height * .018)),
             borderRadius: BorderRadius.circular(10),
             underline: const SizedBox(),
             isExpanded: true,

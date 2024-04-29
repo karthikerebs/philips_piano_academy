@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/domain/models/response_models/piad_class_model/paid_class.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
@@ -67,6 +68,17 @@ class PaidClassTile extends StatelessWidget {
                       },
                     )
                   : const SizedBox(),
+              if (paidClassList[index].attendance == "Present")
+                CommonButton(
+                    label: "View Note",
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RouterConstants.paidClassNoteRoute,
+                          arguments: [
+                            "Paid Class Notes",
+                            paidClassList[index].id.toString()
+                          ]);
+                    }),
             ],
           ),
         ),

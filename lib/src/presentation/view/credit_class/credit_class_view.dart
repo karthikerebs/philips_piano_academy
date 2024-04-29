@@ -13,6 +13,7 @@ import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/cancel_dialog_box.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/class_detail_data.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class CreditClassView extends StatefulWidget {
   const CreditClassView({super.key});
@@ -34,24 +35,7 @@ class _CreditClassViewState extends State<CreditClassView> {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: AppColors.secondaryColor,
-      appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.only(left: kSize.width * 0.04),
-          child: CustomBackButton(
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        title: Text(
-          "Credit Classes",
-          style: AppTypography.dmSansBold.copyWith(
-              color: AppColors.primaryColor, fontSize: kSize.height * 0.028),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: "Credit Class"),
       body: RefreshIndicator(
         color: AppColors.blackColor,
         onRefresh: () async {
@@ -149,15 +133,31 @@ class _CreditClassViewState extends State<CreditClassView> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
-              width: kSize.width * .8,
-              child: Text(
-                  creditClasses[index].addedBy == "Admin"
-                      ? "${creditClasses[index].details ?? ''} added by admin."
-                      : '${creditClasses[index].details ?? ''}',
-                  maxLines: 2,
-                  style: AppTypography.dmSansMedium.copyWith(
-                      color: AppColors.primaryColor,
-                      fontSize: kSize.height * 0.02)),
+              // width: kSize.width * .8,
+              child: RichText(
+                  text: TextSpan(
+                      text: '${creditClasses[index].details ?? ''}',
+                      children: [
+                        if (creditClasses[index].addedBy == "Admin")
+                          TextSpan(
+                              text: '\n(Added by admin.)',
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400))
+                      ],
+                      style: AppTypography.dmSansMedium.copyWith(
+                          color: AppColors.primaryColor,
+                          fontSize: kSize.height *
+                              0.02))) /* Text(
+                    creditClasses[index].addedBy == "Admin"
+                        ? "${creditClasses[index].details ?? ''} added by admin."
+                        : '${creditClasses[index].details ?? ''}',
+                    maxLines: 2,
+                    style: AppTypography.dmSansMedium.copyWith(
+                        color: AppColors.primaryColor,
+                        fontSize: kSize.height * 0.02)) */
+              ,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,9 +173,18 @@ class _CreditClassViewState extends State<CreditClassView> {
                         builder: (context) =>
                             alertDialog(kSize, creditClasses[index]),
                       );
-                      /* Navigator.pushNamed(
-                    context, RouterConstants.creditClassChangeRoute,
-                    arguments: creditClasses[index].id); */
+                    },
+                  )
+                else if (creditClasses[index].attendance == "Present")
+                  CommonButton(
+                    label: "View Note",
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RouterConstants.creditClassNoteRoute,
+                          arguments: [
+                            "Credit Class Notes",
+                            creditClasses[index].id.toString()
+                          ]);
                     },
                   )
               ],

@@ -25,6 +25,10 @@ class HomeDataModel extends Equatable {
   final String? statusCode;
   final String? mobile;
   final String? email;
+  @JsonKey(name: 'emergency_cancel')
+  final int? emergencyCancel;
+  @JsonKey(name: 'credit_class_cnt')
+  final int? creditClassCnt;
 
   const HomeDataModel(
       {this.name,
@@ -38,7 +42,9 @@ class HomeDataModel extends Equatable {
       this.pendingInstallments,
       this.statusCode,
       this.mobile,
-      this.email});
+      this.email,
+      this.creditClassCnt,
+      this.emergencyCancel});
 
   factory HomeDataModel.fromJson(Map<String, dynamic> json) {
     return _$HomeDataModelFromJson(json);
@@ -58,7 +64,9 @@ class HomeDataModel extends Equatable {
       List<dynamic>? pendingInstallments,
       String? statusCode,
       String? mobile,
-      String? email}) {
+      String? email,
+      int? emergencyCancel,
+      int? creditClassCnt}) {
     return HomeDataModel(
         name: name ?? this.name,
         status: status ?? this.status,
@@ -71,7 +79,9 @@ class HomeDataModel extends Equatable {
         pendingInstallments: pendingInstallments ?? this.pendingInstallments,
         statusCode: statusCode ?? this.statusCode,
         mobile: mobile ?? this.mobile,
-        email: email ?? this.email);
+        email: email ?? this.email,
+        creditClassCnt: creditClassCnt ?? this.creditClassCnt,
+        emergencyCancel: emergencyCancel ?? this.emergencyCancel);
   }
 
   @override
@@ -88,7 +98,9 @@ class HomeDataModel extends Equatable {
       pendingInstallments,
       statusCode,
       mobile,
-      email
+      email,
+      creditClassCnt,
+      emergencyCancel
     ];
   }
 }

@@ -31,23 +31,26 @@ class _NormalClassViewState extends State<NormalClassView> {
         child: Scaffold(
             backgroundColor: AppColors.secondaryColor,
             appBar: AppBar(
-              leading: Padding(
-                padding: EdgeInsets.only(left: kSize.width * 0.04),
-                child: CustomBackButton(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
+              automaticallyImplyLeading: false,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon:
+                        Icon(Icons.arrow_back_ios_rounded, color: Colors.black),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text(
+                    "Regular Class",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
               ),
               backgroundColor: Colors.white,
               elevation: 0,
-              centerTitle: true,
-              title: Text(
-                "Regular Classes",
-                style: AppTypography.dmSansBold.copyWith(
-                    color: AppColors.primaryColor,
-                    fontSize: kSize.height * 0.028),
-              ),
+              centerTitle: false,
               bottom: TabBar(
                   onTap: (value) {
                     switch (value) {

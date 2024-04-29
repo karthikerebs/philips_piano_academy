@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/application/home/home_bloc.dart';
+import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/application/renewal/renewal_bloc.dart';
 import 'package:music_app/src/domain/models/pm_models/pm_send_renew_request_model/pm_send_renew_request_model.dart';
 // import 'package:music_app/src/presentation/core/constants/strings.dart';
@@ -13,10 +14,10 @@ import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
-import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 // import 'package:music_app/src/presentation/core/widgets/date_picker.dart';
 import 'package:music_app/src/presentation/core/widgets/primary_button.dart';
+import 'package:music_app/src/presentation/view/renewal_fee/widgets/month_dropdown.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class RenewalFeeDetailsView extends StatefulWidget {
@@ -104,30 +105,16 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                     SizedBox(height: kSize.height * 0.0326),
                     Center(
                         child: SizedBox(
-                      // height: 30,
-                      width: kSize.width * .4,
-                      child: TextField(
-                        controller: monthController,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
-                        cursorColor: AppColors.blackColor,
-                        decoration: InputDecoration(
-                            counter: const SizedBox(),
-                            border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppColors.blackColor, width: 2)),
-                            disabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppColors.blackColor, width: 2)),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: AppColors.blackColor, width: 2))),
-                        maxLength: 2,
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {},
-                      ),
-                    )),
-                    SizedBox(height: kSize.height * 0.0326),
+                            width: kSize.width * .3,
+                            child: MonthDropdown(
+                              onSelected: (value) {
+                                monthController.text = value;
+                                context.read<RenewalBloc>().add(
+                                    GetRenewalFeeDetailsEvent(
+                                        months: monthController.text));
+                              },
+                            ))),
+                    /*    SizedBox(height: kSize.height * 0.0326),
                     Center(
                         child: FooterButton(
                             label: "Get Fee Details",
@@ -136,7 +123,7 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                               context.read<RenewalBloc>().add(
                                   GetRenewalFeeDetailsEvent(
                                       months: monthController.text));
-                            })),
+                            })),*/
                     SizedBox(height: kSize.height * 0.04),
                     BlocConsumer<RenewalBloc, RenewalState>(
                       listenWhen: (previous, current) =>
@@ -163,6 +150,19 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                                   message: status.errorMessage,
                                   style: MessageStyle.error)
                               .show();
+                        } else if (state.requestStatus is StatusAuthFailure) {
+                          CustomLoading.dissmis(context);
+                          CustomMessage(
+                                  context: context,
+                                  message:
+                                      'Access Denied. Kindly reauthenticate.',
+                                  style: MessageStyle.error)
+                              .show();
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            RouterConstants.splashRoute,
+                            (route) => false,
+                          );
                         }
                       },
                       builder: (context, state) {
@@ -174,12 +174,66 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                         } else if (state.feeDetailStatus is StatusSuccess) {
                           return Column(
                             children: [
-                              dataTile(kSize, "Fee :",
-                                  "₹${state.feeDetails.fee!.round()}"),
+                              dataTile(
+                                kSize,
+                                "Fee :",
+                                monthController.text == "1"
+                                    ? "${state.feeDetails.fee!.round()}"
+                                    : "₹${calculateDiscountedFee(state.feeDetails.fee!.round(), monthController.text == "3" ? 0.035 : 0.06).round()}",
+                              ),
                               dataTile(kSize, "Extra Fee :",
                                   "₹${state.feeDetails.extraFee!.round()}"),
                               dataTile(kSize, "Extra Class Fee :",
                                   "₹${widget.extraClassFee}"),
+                              Divider(color: Colors.black),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Total : ',
+                                      style: AppTypography.dmSansRegular
+                                          .copyWith(
+                                              color: AppColors.primaryColor,
+                                              fontSize: kSize.height * 0.028),
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: "₹${sumTotalFee(
+                                            state.feeDetails.extraFee!.round(),
+                                            num.parse(widget.extraClassFee),
+                                            monthController.text == "1"
+                                                ? state.feeDetails.fee!.round()
+                                                : calculateDiscountedFee(
+                                                    state.feeDetails.fee!
+                                                        .round(),
+                                                    monthController.text == "3"
+                                                        ? 0.035
+                                                        : 0.06),
+                                          ).round()}",
+                                          style: AppTypography.dmSansMedium
+                                              .copyWith(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize:
+                                                      kSize.height * 0.023),
+                                          children: [
+                                            TextSpan(
+                                                text: " (18% gst included)",
+                                                style: AppTypography
+                                                    .dmSansRegular
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                        fontSize: kSize.height *
+                                                            0.018))
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 25),
                               dataTile(
                                   kSize,
                                   "Joining Date :",
@@ -198,7 +252,7 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                                   DateFormat("dd MMM, yyyy").format(
                                       DateTime.parse(
                                           "${state.feeDetails.validTo}"))),
-                              SizedBox(height: kSize.height * .08),
+                              SizedBox(height: kSize.height * .05),
                               PrimaryButton(
                                 onPressed: () {
                                   final state = context.read<HomeBloc>().state;
@@ -228,6 +282,30 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
                                     final state =
                                         context.read<RenewalBloc>().state;
                                     _startPayment(state);
+                                    // webhook api for get transaction id
+                                    /*  final profileState =
+                                        context.read<ProfileBloc>().state;
+                                    log("profileState.basicData.id!.toString()");
+                                    context.read<RenewalBloc>().add(RenewalWebhookEvent(
+                                        params: PmRenewalWebhook(
+                                            extraFee: num.parse(
+                                                "${state.feeDetails.extraFee}"),
+                                            extraClassFee: num.tryParse(
+                                                "${widget.extraClassFee}"),
+                                            fee: num.parse(
+                                                "${state.feeDetails.fee}"),
+                                            payType: "Full",
+                                            paymentMethod: "Online",
+                                            months: int.parse(
+                                                monthController.text),
+                                            joiningDate:
+                                                "${state.feeDetails.validFrom}",
+                                            validFrom:
+                                                "${state.feeDetails.validFrom}",
+                                            validTo:
+                                                "${state.feeDetails.validTo}",
+                                            transactionId:
+                                                "#TRXPAID${profileState.basicData.id!}"))); */
                                   }
                                 },
                                 label: 'Proceed',
@@ -261,7 +339,7 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
   Widget dataTile(Size kSize, String label, String data) {
     return Padding(
       padding:
-          EdgeInsets.symmetric(vertical: kSize.height * 0.0159, horizontal: 20),
+          EdgeInsets.symmetric(vertical: kSize.height * 0.012, horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -283,6 +361,8 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
 // Handle payment success
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     log("Payment success: ${response.paymentId}");
+    log("orderid${response.orderId}");
+
     final state = context.read<RenewalBloc>().state;
     final params = PmSendRenewRequestModel(
         extraFee: "${state.feeDetails.extraFee}",
@@ -314,9 +394,16 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
 
 // start payment
   void _startPayment(RenewalState renewalState) {
-    final state = context.read<HomeBloc>().state;
-    int amountInPaisa = (sumTotalFee(renewalState.feeDetails.extraFee!,
-                int.parse(widget.extraClassFee), renewalState.feeDetails.fee!) *
+    final state = context.read<ProfileBloc>().state;
+    int amountInPaisa = (sumTotalFee(
+                    renewalState.feeDetails.extraFee!.round(),
+                    num.parse(widget.extraClassFee),
+                    monthController.text == "1"
+                        ? renewalState.feeDetails.fee!.round()
+                        : calculateDiscountedFee(
+                            renewalState.feeDetails.fee!.round(),
+                            monthController.text == "3" ? 0.035 : 0.06))
+                .round() *
             100)
         .round();
     Map<String, dynamic> options = {
@@ -325,8 +412,8 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
       'name': "Philip's Piano Academy",
       'description': 'Payment for participation in your music class.',
       'prefill': {
-        'contact': '${state.homeData.mobile}',
-        'email': '${state.homeData.email}'
+        'contact': '${state.basicData.mobile}',
+        'email': '${state.basicData.email}'
       },
       'external': {'wallets': []},
     };
@@ -342,6 +429,10 @@ class _RenewalFeeDetailsViewState extends State<RenewalFeeDetailsView> {
   num sumTotalFee(num renewalFee, num extraClassFee, num fee) {
     var totalSumFee = renewalFee + extraClassFee + fee;
     return totalSumFee;
+  }
+
+  num calculateDiscountedFee(num totalFee, num discountPercentage) {
+    return totalFee - (totalFee * discountPercentage);
   }
 }
 

@@ -23,23 +23,28 @@ class FooterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-            foregroundColor: AppColors.secondaryColor,
-            shadowColor: AppColors.secondaryColor,
-            backgroundColor: backgroundColor ?? AppColors.primaryColor,
-            alignment: Alignment.center,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(kSize.height * 0.131)),
-            padding: padding ??
-                EdgeInsets.symmetric(
-                    vertical: kSize.height * 0.012,
-                    horizontal: kSize.width * 0.08)),
-        child: Text(
-          label,
-          style: AppTypography.dmSansMedium.copyWith(
-              fontSize: fontSize ?? kSize.height * 0.0189,
-              color: labelColor ?? AppColors.secondaryColor),
-        ));
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.secondaryColor,
+        shadowColor: AppColors.secondaryColor,
+        backgroundColor: backgroundColor ?? AppColors.primaryColor,
+        alignment: Alignment.center,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kSize.height * 0.16)),
+        padding: EdgeInsets.symmetric(horizontal: kSize.height * 0.029),
+        //  padding ??
+        //     EdgeInsets.symmetric(
+        //       vertical: kSize.height * 0.012,
+        //     ),
+      ),
+      child: Text(
+        label,
+        textAlign: TextAlign.left,
+        style: AppTypography.dmSansMedium.copyWith(
+            fontSize: fontSize ?? kSize.height * 0.0189,
+            color: labelColor ?? AppColors.secondaryColor),
+      ),
+    );
   }
 }
+//  horizontal: kSize.width * 0.08

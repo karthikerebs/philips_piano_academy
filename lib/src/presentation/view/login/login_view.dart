@@ -108,133 +108,132 @@ class _LoginViewState extends State<LoginView> {
               }
             },
             child: SizedBox(
-                height: kSize.height,
-                width: kSize.width,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Container(
-                      color: AppColors.primaryColor,
-                      padding: EdgeInsets.only(
-                          left: kSize.width * 0.027,
-                          right: kSize.width * 0.027),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Image.asset(AppImages.logo,
-                                  height: kSize.height * 0.28),
-                            ),
-                            SizedBox(height: kSize.height * 0.03),
-                            CustomTextField(
-                                fillColor: AppColors.textfieldFillColor,
-                                hintText: "Username",
-                                controller: usernameControler,
-                                keyboardType: TextInputType.name,
-                                errorMessage: "Please enter valid user name",
-                                validator: (value) {
-                                  return FormValidators.userNameValidate(value);
-                                }),
-                            SizedBox(
-                              height: kSize.height * 0.01910,
-                            ),
-                            ValueListenableBuilder(
-                              valueListenable: showPassword,
-                              builder: (context, value, child) {
-                                return CustomTextField(
-                                    fillColor: AppColors.textfieldFillColor,
-                                    hintText: "Password",
-                                    controller: passwordController,
-                                    obscureText: !showPassword.value,
-                                    maxLines: 1,
-                                    errorMessage: "Please enter valid password",
-                                    suffixIcon: Padding(
-                                      padding: EdgeInsets.only(
-                                        right: kSize.width * 0.05,
-                                      ),
-                                      child: InkWell(
-                                        onTap: (() {
-                                          showPassword.value =
-                                              !showPassword.value;
-                                        }),
-                                        child: Icon(
-                                            showPassword.value
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
-                                            color: AppColors.blackColor),
-                                      ),
-                                    ),
-                                    keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      return FormValidators.emptyValidate(
-                                          value);
-                                    });
-                              },
-                            ),
-                            SizedBox(height: kSize.height * 0.0410),
-                            SizedBox(
-                                width: kSize.width,
-                                child: PrimaryButton(
-                                    onPressed: () {
-                                      if (formKey.currentState!.validate()) {
-                                        context.read<AuthBloc>().add(LoginEvent(
-                                            fcmToken: firebaseToken,
-                                            username: usernameControler.text,
-                                            password: passwordController.text));
-                                      }
-                                    },
-                                    label: AppStrings.login)),
-                            SizedBox(height: kSize.height * 0.0190),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: SizedBox(
-                        width: kSize.width,
-                        child: Image.asset(
-                          AppImages.loginBottom,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: kSize.height * .04),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+              height: kSize.height,
+              width: kSize.width,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    color: AppColors.primaryColor,
+                    padding: EdgeInsets.only(
+                        left: kSize.width * 0.027, right: kSize.width * 0.027),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(AppStrings.dontHaveAccount,
-                              style: AppTypography.dmSansRegular.copyWith(
-                                  color: AppColors.secondaryColor,
-                                  fontSize: kSize.height * 0.0184)),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  alignment: Alignment.centerRight,
-                                  foregroundColor: AppColors.primaryColor),
-                              onPressed: () {
-                                context
-                                    .read<AuthBloc>()
-                                    .add(const GetBrachesEvent());
-                                Navigator.pushNamed(
-                                  context,
-                                  RouterConstants.registerRoute,
-                                );
-                              },
-                              child: Text(AppStrings.createOne,
-                                  style: AppTypography.dmSansRegular.copyWith(
-                                      color: AppColors.secondaryColor,
-                                      decorationColor: AppColors.secondaryColor,
-                                      decoration: TextDecoration.underline,
-                                      fontSize: kSize.height * 0.0184)))
+                          Center(
+                            child: Image.asset(AppImages.logo,
+                                height: kSize.height * 0.28),
+                          ),
+                          SizedBox(height: kSize.height * 0.03),
+                          CustomTextField(
+                              fillColor: AppColors.textfieldFillColor,
+                              hintText: "Username",
+                              controller: usernameControler,
+                              keyboardType: TextInputType.name,
+                              errorMessage: "Please enter valid user name",
+                              validator: (value) {
+                                return FormValidators.userNameValidate(value);
+                              }),
+                          SizedBox(
+                            height: kSize.height * 0.01910,
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: showPassword,
+                            builder: (context, value, child) {
+                              return CustomTextField(
+                                  fillColor: AppColors.textfieldFillColor,
+                                  hintText: "Password",
+                                  controller: passwordController,
+                                  obscureText: !showPassword.value,
+                                  maxLines: 1,
+                                  errorMessage: "Please enter valid password",
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(
+                                      right: kSize.width * 0.05,
+                                    ),
+                                    child: InkWell(
+                                      onTap: (() {
+                                        showPassword.value =
+                                            !showPassword.value;
+                                      }),
+                                      child: Icon(
+                                          showPassword.value
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color: AppColors.blackColor),
+                                    ),
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) {
+                                    return FormValidators.emptyValidate(value);
+                                  });
+                            },
+                          ),
+                          SizedBox(height: kSize.height * 0.0410),
+                          SizedBox(
+                              width: kSize.width,
+                              child: PrimaryButton(
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      context.read<AuthBloc>().add(LoginEvent(
+                                          fcmToken: firebaseToken,
+                                          username: usernameControler.text,
+                                          password: passwordController.text));
+                                    }
+                                  },
+                                  label: AppStrings.login)),
+                          SizedBox(height: kSize.height * 0.0190),
                         ],
                       ),
-                    )
-                  ],
-                )),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: kSize.width,
+                      child: Image.asset(
+                        AppImages.loginBottom,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: kSize.height * .04),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(AppStrings.dontHaveAccount,
+                            style: AppTypography.dmSansRegular.copyWith(
+                                color: AppColors.secondaryColor,
+                                fontSize: kSize.height * 0.0184)),
+                        TextButton(
+                            style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                alignment: Alignment.centerRight,
+                                foregroundColor: AppColors.primaryColor),
+                            onPressed: () {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(const GetBrachesEvent());
+                              Navigator.pushNamed(
+                                context,
+                                RouterConstants.registerRoute,
+                              );
+                            },
+                            child: Text(AppStrings.createOne,
+                                style: AppTypography.dmSansRegular.copyWith(
+                                    color: AppColors.secondaryColor,
+                                    decorationColor: AppColors.secondaryColor,
+                                    decoration: TextDecoration.underline,
+                                    fontSize: kSize.height * 0.0184)))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

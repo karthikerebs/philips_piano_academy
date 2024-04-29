@@ -7,6 +7,7 @@ import 'package:music_app/src/domain/models/response_models/tutorial_video_model
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
+import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class TutorialVideosView extends StatefulWidget {
   const TutorialVideosView({super.key});
@@ -20,6 +21,7 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: CustomAppBar(title: "Video Tutorials"),
       backgroundColor: AppColors.secondaryColor,
       body: SizedBox(
           height: kSize.height,
@@ -29,28 +31,6 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: kSize.height * .05,
-                ),
-                CustomBackButton(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                SizedBox(
-                  height: kSize.height * 0.028,
-                ),
-                Center(
-                  child: Text(
-                    'Video Tutorials',
-                    style: AppTypography.dmSansMedium.copyWith(
-                        color: AppColors.primaryColor,
-                        fontSize: kSize.height * 0.0284),
-                  ),
-                ),
-                SizedBox(
-                  height: kSize.height * 0.0189,
-                ),
                 BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state.status is StatusLoading) {
@@ -87,9 +67,11 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
     return Container(
       margin: EdgeInsets.only(bottom: kSize.height * 0.0094),
       width: kSize.width,
+      height: kSize.height * 0.2,
       padding: EdgeInsets.symmetric(
           vertical: kSize.height * 0.0236, horizontal: kSize.width * 0.044),
       decoration: BoxDecoration(
+          // color: Colors.red,
           borderRadius: BorderRadius.circular(kSize.height * 0.0236),
           border: Border.all(color: AppColors.primaryColor)),
       child: Row(children: [
@@ -98,7 +80,9 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(kSize.height * 0.0118)),
           child: Image.network(
-            "https://img.youtube.com/vi/${getVideoID(tutorialVideoData.link ?? '')}/0.jpg",
+            "https://img.youtube.com/vi/${getIdFromUrl(tutorialVideoData.link ?? "")}/0.jpg",
+
+            // "https://img.youtube.com/vi/${getVideoID(tutorialVideoData.link ?? '')}/0.jpg",
             height: kSize.height * 0.15640,
             fit: BoxFit.cover,
           ) /* Image.asset(AppImages.tutorialVideoBg,
@@ -106,45 +90,49 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
           ,
         ),
         SizedBox(width: kSize.width * 0.052),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: kSize.width * .3,
-              child: Text(
-                /* 'Getting Started with Rythm' */ tutorialVideoData.title ??
-                    "",
-                maxLines: 2,
-                style: AppTypography.dmSansMedium.copyWith(
-                    color: AppColors.primaryColor,
-                    fontSize: kSize.height * 0.0165),
-              ),
-            ),
-            SizedBox(height: kSize.height * .01),
-            InkWell(
-              highlightColor: AppColors.transparent,
-              splashColor: AppColors.transparent,
-              onTap: () {
-                Navigator.pushNamed(
-                    context, RouterConstants.tutorialVideoDetailRoute,
-                    arguments: tutorialVideoData);
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: kSize.height * .01,
-                    horizontal: kSize.width * .06),
-                decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(kSize.height * 0.118)),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: kSize.width * .3,
                 child: Text(
-                  "Watch Video",
+                  overflow: TextOverflow.ellipsis,
+                  /* 'Getting Started with Rythm' */ tutorialVideoData.title ??
+                      "",
+                  maxLines: 2,
                   style: AppTypography.dmSansMedium.copyWith(
-                      color: AppColors.secondaryColor,
-                      fontSize: kSize.height * 0.0118),
+                      color: AppColors.primaryColor,
+                      fontSize: kSize.height * 0.0165),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: kSize.height * .01),
+              InkWell(
+                highlightColor: AppColors.transparent,
+                splashColor: AppColors.transparent,
+                onTap: () {
+                  Navigator.pushNamed(
+                      context, RouterConstants.tutorialVideoDetailRoute,
+                      arguments: tutorialVideoData);
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: kSize.height * .01,
+                      horizontal: kSize.width * .06),
+                  decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius:
+                          BorderRadius.circular(kSize.height * 0.118)),
+                  child: Text(
+                    "Watch ",
+                    style: AppTypography.dmSansMedium.copyWith(
+                        color: AppColors.secondaryColor,
+                        fontSize: kSize.height * 0.01),
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ]),
     );
@@ -154,5 +142,16 @@ class _TutorialVideosViewState extends State<TutorialVideosView> {
     url = url.replaceAll("https://www.youtube.com/watch?v=", "");
     url = url.replaceAll("https://m.youtube.com/watch?v=", "");
     return url;
+  }
+
+  String getIdFromUrl(String url) {
+    String? videoId;
+    if (url.contains('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.contains('watch?v=')) {
+      videoId = url.split('watch?v=')[1].split('&')[0];
+    }
+
+    return videoId!;
   }
 }
