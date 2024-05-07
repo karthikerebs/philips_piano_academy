@@ -112,6 +112,20 @@ class CreditClassRepository extends ICreditClassRepository {
     }
   }
 
+  // @override
+  // Future<UpcomingSlotesModel> getUpcomingSlotes() async {
+  //   try {
+  //     final response =
+  //         await client.getWithProfile(url: "${AppUrls.upcomingSlotesUrl}1");
+  //     final decode = jsonDecode(response.data) as Map<String, dynamic>;
+  //     return UpcomingSlotesModel.fromJson(decode);
+  //   } on ApiFailure catch (e) {
+  //     throw ApiFailure(message: e.toString());
+  //   } on ApiAuthFailure catch (e) {
+  //     throw ApiAuthFailure(e.error ?? "");
+  //   }
+  // }
+
   @override
   Future<CompletedNoteModel> getCreditClassNotes(
       {required String classId}) async {

@@ -116,14 +116,15 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
                             )));
                       }
                     } else if (state.checkPaidStatus is StatusFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
                           backgroundColor: AppColors.redColor,
                           behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            'Slot already booked.',
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          )));
+                          content: Text('Slot already booked.',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center),
+                        ),
+                      );
                     }
                   },
                 ),

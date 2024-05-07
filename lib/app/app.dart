@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:music_app/app/injector/injector.dart';
 import 'package:music_app/app/router/router.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => getIt<ChatBloc>()),
         BlocProvider(create: (context) => getIt<RenewalBloc>()),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
           title: 'Philips Piano Academy',
           navigatorKey: navigatorKey,
           initialRoute: RouterConstants.splashRoute,

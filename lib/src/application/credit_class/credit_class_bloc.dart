@@ -127,6 +127,7 @@ class CreditClassBloc extends Bloc<CreditClassEvent, CreditClassState> {
       UpcomingCreditSloteEvent event, Emitter<CreditClassState> emit) async {
     try {
       emit(state.copyWith(upcomingSlotStatus: StatusLoading()));
+
       final res = await _iCreditClassRepository.getUpcomingSlotes();
       if (res.statusCode == '01') {
         emit(state.copyWith(

@@ -5,6 +5,8 @@ import 'package:music_app/app/app.dart';
 import 'package:music_app/app/injector/injector.dart';
 import 'package:music_app/firebase_options.dart';
 import 'package:music_app/src/infrastructure/fcm_service/fcm_service.dart';
+import 'package:music_app/versioncheck.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 @pragma('vm:entry-point')
@@ -17,6 +19,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Permission.notification.isDenied.then((value) {
     if (value) {
       Permission.notification.request();

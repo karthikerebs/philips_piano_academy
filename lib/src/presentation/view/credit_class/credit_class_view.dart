@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
@@ -7,13 +9,13 @@ import 'package:music_app/src/application/credit_class/credit_class_bloc.dart';
 import 'package:music_app/src/domain/models/response_models/credit_class_model/credit_class.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/common_button.dart';
 import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/cancel_dialog_box.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/class_detail_data.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
+import 'package:music_app/src/presentation/view/renewal/renewal_view.dart';
 
 class CreditClassView extends StatefulWidget {
   const CreditClassView({super.key});
@@ -23,6 +25,8 @@ class CreditClassView extends StatefulWidget {
 }
 
 class _CreditClassViewState extends State<CreditClassView> {
+  final ProfileController profileController = Get.put(ProfileController());
+
   @override
   void initState() {
     context.read<CreditClassBloc>().add(const GetCreditClassEvent());
@@ -163,7 +167,38 @@ class _CreditClassViewState extends State<CreditClassView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ClassDetailData(index: index, creditClasses: creditClasses),
-                if (creditClasses[index].bookStatus == true)
+                if (isCheckBookingRequest() == true)
+                  CommonButton(
+                    backgroundColor: Colors.grey,
+                    label: "Account Expired ",
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                            'Account Expired',
+                            style: TextStyle(fontSize: kSize.height * 0.025),
+                          ),
+                          content: Text(
+                            'Your account has expired. Please contact your teacher.',
+                            style: TextStyle(fontSize: kSize.height * 0.02),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Okay',
+                                style: TextStyle(fontSize: kSize.height * 0.02),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  )
+                else if (creditClasses[index].bookStatus == true)
                   CommonButton(
                     label: "Book Class",
                     onTap: () {
@@ -297,6 +332,10 @@ class _CreditClassViewState extends State<CreditClassView> {
                         Navigator.pushNamed(
                             context, RouterConstants.creditClassChangeRoute,
                             arguments: creditClass.id);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => SelectBranch()));
                       },
                       backgroundColor: AppColors.blackColor),
                 ],
@@ -304,5 +343,13 @@ class _CreditClassViewState extends State<CreditClassView> {
             ]),
       ),
     );
+  }
+
+  bool isCheckBookingRequest() {
+    final DateTime validTo = DateFormat("yyyy-MM-dd")
+        // .parse("2024-04-21");
+        .parse(profileController.validto.value);
+    DateTime currentDate = DateTime.now();
+    return validTo.isBefore(currentDate);
   }
 }

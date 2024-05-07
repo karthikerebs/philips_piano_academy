@@ -1,6 +1,8 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
@@ -34,6 +36,8 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController dateOfBirthController = TextEditingController();
   TextEditingController gardiensNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController wappcountryCodeController = TextEditingController();
+  TextEditingController altcountryCodeController = TextEditingController();
   TextEditingController alternativePhoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -127,301 +131,306 @@ class _RegisterViewState extends State<RegisterView> {
                                         valueListenable: isValidate,
                                         builder: (context, value, child) {
                                           return Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText:
+                                                      'Students First Name*',
+                                                  textCapitalization:
+                                                      TextCapitalization.words,
+                                                  controller:
+                                                      firstNameController,
+                                                  errorMessage:
+                                                      "Please enter valid name",
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .nameValidate(value);
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.name),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText: 'Last Name*',
+                                                  controller:
+                                                      lastNameController,
+                                                  textCapitalization:
+                                                      TextCapitalization.words,
+                                                  errorMessage:
+                                                      "Please enter valid name",
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .nameValidate(value);
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.name),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomDatePicker(
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .emptyValidate(value);
+                                                  },
+                                                  dateController:
+                                                      dateOfBirthController,
+                                                  borderColor:
+                                                      AppColors.transparent,
+                                                  fillColor: AppColors
+                                                      .textFieldFillColor,
+                                                  errorMessage:
+                                                      "Please enter valid date of birth",
+                                                  suffixIcon: const SizedBox(),
+                                                  hintText:
+                                                      'Date of Birth (DD/MM/YYYY)*',
+                                                  initialDatePickerMode:
+                                                      DatePickerMode.year,
+                                                  onChanged: (value) {
+                                                    dateOfBirthController.text =
+                                                        dateFormat
+                                                            .format(value);
+                                                    isShowGuardiansField(value);
+                                                  }),
+                                              showGuardiansField.value
+                                                  ? SizedBox(
+                                                      height:
+                                                          kSize.height * .015)
+                                                  : const SizedBox(),
+                                              Visibility(
+                                                visible:
+                                                    showGuardiansField.value,
+                                                child: CustomTextField(
                                                     hintText:
-                                                        'Students First Name*',
+                                                        'Guardian’s Name*',
                                                     textCapitalization:
                                                         TextCapitalization
                                                             .words,
-                                                    controller:
-                                                        firstNameController,
+                                                    keyboardType:
+                                                        TextInputType.name,
                                                     errorMessage:
-                                                        "Please enter valid name",
+                                                        "Guardian’s name should not be empty",
                                                     validator: (value) {
                                                       return FormValidators
                                                           .nameValidate(value);
                                                     },
-                                                    keyboardType:
-                                                        TextInputType.name),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    hintText: 'Last Name*',
                                                     controller:
-                                                        lastNameController,
-                                                    textCapitalization:
-                                                        TextCapitalization
-                                                            .words,
-                                                    errorMessage:
-                                                        "Please enter valid name",
-                                                    validator: (value) {
-                                                      return FormValidators
-                                                          .nameValidate(value);
+                                                        gardiensNameController),
+                                              ),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                hintText: 'Whatsapp Number*',
+                                                prefixIcon: CountryCodePicker(
+                                                    onInit: (countryCode) {
+                                                      wappcountryCodeController
+                                                          .text = countryCode
+                                                              ?.dialCode ??
+                                                          "+91";
                                                     },
-                                                    keyboardType:
-                                                        TextInputType.name),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomDatePicker(
-                                                    validator: (value) {
-                                                      return FormValidators
-                                                          .emptyValidate(value);
+                                                    onChanged: (countryCode) {
+                                                      wappcountryCodeController
+                                                          .text = countryCode
+                                                              .dialCode ??
+                                                          "+91";
                                                     },
-                                                    dateController:
-                                                        dateOfBirthController,
-                                                    borderColor:
-                                                        AppColors.transparent,
-                                                    fillColor: AppColors
-                                                        .textFieldFillColor,
-                                                    errorMessage:
-                                                        "Please enter valid date of birth",
-                                                    suffixIcon:
-                                                        const SizedBox(),
-                                                    hintText:
-                                                        'Date of Birth (DD/MM/YYYY)*',
-                                                    initialDatePickerMode:
-                                                        DatePickerMode.year,
-                                                    onChanged: (value) {
-                                                      dateOfBirthController
-                                                              .text =
-                                                          dateFormat
-                                                              .format(value);
-                                                      isShowGuardiansField(
-                                                          value);
-                                                    }),
-                                                showGuardiansField.value
-                                                    ? SizedBox(
-                                                        height:
-                                                            kSize.height * .015)
-                                                    : const SizedBox(),
-                                                Visibility(
-                                                  visible:
-                                                      showGuardiansField.value,
-                                                  child: CustomTextField(
-                                                      hintText:
-                                                          'Guardian’s Name*',
-                                                      textCapitalization:
-                                                          TextCapitalization
-                                                              .words,
-                                                      keyboardType:
-                                                          TextInputType.name,
-                                                      errorMessage:
-                                                          "Guardian’s name should not be empty",
-                                                      validator: (value) {
-                                                        return FormValidators
-                                                            .nameValidate(
-                                                                value);
-                                                      },
-                                                      controller:
-                                                          gardiensNameController),
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                  hintText: 'Whatsapp Number*',
-                                                  prefixIcon: CountryCodePicker(
-                                                    onChanged: print,
                                                     showFlag: true,
-                                                    initialSelection: '+91',
+                                                    initialSelection: 'IN',
+                                                    favorite: ['+91', 'IN'],
                                                     flagWidth: 20,
-                                                    favorite: ['+91'],
                                                     showCountryOnly: false,
                                                     showOnlyCountryWhenClosed:
                                                         false,
-                                                    alignLeft: false,
-                                                  ),
-                                                  controller: phoneController,
-                                                  errorMessage:
-                                                      "Please enter valid whatsapp number",
-                                                  keyboardType:
-                                                      TextInputType.number,
+                                                    alignLeft: false),
+                                                controller: phoneController,
+                                                errorMessage:
+                                                    "Please enter valid whatsapp number",
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                validator: (value) {
+                                                  return FormValidators
+                                                      .phoneValidate(value);
+                                                },
+                                                maxLength: 10,
+                                              ),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
                                                   validator: (value) {
                                                     return FormValidators
                                                         .phoneValidate(value);
                                                   },
-                                                  maxLength: 10,
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    prefixIcon:
-                                                        CountryCodePicker(
-                                                      onChanged: print,
+                                                  prefixIcon: CountryCodePicker(
+                                                      onInit: (countryCode) {
+                                                        altcountryCodeController
+                                                            .text = countryCode
+                                                                ?.dialCode ??
+                                                            "+91";
+                                                      },
+                                                      onChanged: (countryCode) {
+                                                        altcountryCodeController
+                                                            .text = countryCode
+                                                                .dialCode ??
+                                                            "+91";
+                                                      },
                                                       showFlag: true,
-                                                      initialSelection: '+91',
+                                                      initialSelection: 'IN',
+                                                      favorite: ['+91', 'IN'],
                                                       flagWidth: 20,
-                                                      favorite: ['+91'],
                                                       showCountryOnly: false,
                                                       showOnlyCountryWhenClosed:
                                                           false,
-                                                      alignLeft: false,
-                                                    ),
-                                                    hintText:
-                                                        'Alternative Phone (Optional)',
-                                                    onChanged: (value) {
-                                                      if (value ==
-                                                          phoneController
-                                                              .text) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                                SnackBar(
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .blackColor,
-                                                                    content:
-                                                                        Text(
-                                                                      "whatsapp number and alternative mobile number cannot be the same.",
-                                                                      style: AppTypography.dmSansRegular.copyWith(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              AppColors.secondaryColor),
-                                                                    )));
-                                                      }
-                                                    },
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    maxLength: 10,
-                                                    controller:
-                                                        alternativePhoneController),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    hintText: 'Email*',
-                                                    controller: emailController,
-                                                    errorMessage:
-                                                        "Please enter valid email",
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    validator: (value) {
-                                                      return FormValidators
-                                                          .emailValidate(value);
-                                                    }),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    hintText:
-                                                        'Address (Optional)',
-                                                    controller:
-                                                        addressController,
-                                                    textCapitalization:
-                                                        TextCapitalization
-                                                            .words,
-                                                    errorMessage:
-                                                        "Please enter valid address",
-                                                    keyboardType:
-                                                        TextInputType.name),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    hintText: 'User Name*',
-                                                    controller:
-                                                        userNameController,
-                                                    helperText:
-                                                        "Letters and numbers only, no symbols or spaces.",
-                                                    errorMessage:
-                                                        errorMessage.value,
-                                                    onChanged: (value) {
-                                                      validateName(value);
-                                                    },
-                                                    validator: (value) {
-                                                      return FormValidators
-                                                          .userNameValidate(
-                                                              value);
-                                                    },
-                                                    keyboardType:
-                                                        TextInputType.name),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                CustomTextField(
-                                                    hintText: 'Password*',
-                                                    helperText:
-                                                        "Letters and numbers only, no symbols or spaces.",
-                                                    controller:
-                                                        passwordController,
-                                                    errorMessage:
-                                                        "Please enter valid password",
-                                                    validator: (value) {
-                                                      return FormValidators
-                                                          .userNameValidate(
-                                                              value);
-                                                    },
-                                                    keyboardType: TextInputType
-                                                        .visiblePassword),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                DropDownButton(
-                                                  hintColor:
-                                                      AppColors.greyColor,
-                                                  isValidate: isValidate,
-                                                  fillColor: AppColors
-                                                      .textFieldFillColor,
-                                                  borderColor:
-                                                      AppColors.transparent,
-                                                  onSelected: (selectedIndex) {
-                                                    dropdownValue.value =
-                                                        selectedIndex;
-                                                    if (dropdownValue.value ==
-                                                        "Offline ( 	Koramangala , Haralur )") {
-                                                      context.read<AuthBloc>().add(
-                                                          const GetBrachesEvent());
-                                                    }
-                                                    classController.text =
-                                                        selectedIndex;
-                                                  },
-                                                  errorMessage:
-                                                      'Please select class',
-                                                  dropList: classList,
+                                                      alignLeft: false),
                                                   hintText:
-                                                      'Choose Preferred Class Mode*',
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                        kSize.height * .015),
-                                                dropdownValue.value ==
-                                                        "Offline ( 	Koramangala , Haralur )"
-                                                    ? BlocConsumer<AuthBloc,
-                                                        AuthState>(
-                                                        listener:
-                                                            (context, state) {},
-                                                        buildWhen: (previous,
-                                                                current) =>
-                                                            previous.status !=
-                                                            current.status,
-                                                        builder:
-                                                            (context, state) {
-                                                          if (state.status
-                                                              is StatusLoading) {
-                                                            return Center(
-                                                              child: CircularProgressIndicator(
-                                                                  strokeWidth:
-                                                                      1,
-                                                                  color: Colors
-                                                                      .black),
-                                                            );
-                                                          } else if (state
-                                                                  .status
-                                                              is StatusSuccess) {
-                                                            return BranchDropDownButton(
+                                                      'Alternative Phone (Optional)',
+                                                  onChanged: (value) {
+                                                    if (value ==
+                                                        phoneController.text) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .blackColor,
+                                                          content: Text(
+                                                            "whatsapp number and alternative mobile number cannot be the same.",
+                                                            style: AppTypography
+                                                                .dmSansRegular
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: AppColors
+                                                                        .secondaryColor),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  maxLength: 10,
+                                                  controller:
+                                                      alternativePhoneController),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText: 'Email*',
+                                                  controller: emailController,
+                                                  errorMessage:
+                                                      "Please enter valid email",
+                                                  keyboardType: TextInputType
+                                                      .emailAddress,
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .emailValidate(value);
+                                                  }),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText:
+                                                      'Address (Optional)',
+                                                  controller: addressController,
+                                                  textCapitalization:
+                                                      TextCapitalization.words,
+                                                  errorMessage:
+                                                      "Please enter valid address",
+                                                  keyboardType:
+                                                      TextInputType.name),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText: 'User Name*',
+                                                  controller:
+                                                      userNameController,
+                                                  helperText:
+                                                      "Letters and numbers only, no symbols or spaces.",
+                                                  errorMessage:
+                                                      errorMessage.value,
+                                                  onChanged: (value) {
+                                                    validateName(value);
+                                                  },
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .userNameValidate(
+                                                            value);
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.name),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              CustomTextField(
+                                                  hintText: 'Password*',
+                                                  helperText:
+                                                      "Letters and numbers only, no symbols or spaces.",
+                                                  controller:
+                                                      passwordController,
+                                                  errorMessage:
+                                                      "Please enter valid password",
+                                                  validator: (value) {
+                                                    return FormValidators
+                                                        .userNameValidate(
+                                                            value);
+                                                  },
+                                                  keyboardType: TextInputType
+                                                      .visiblePassword),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              DropDownButton(
+                                                hintColor: AppColors.greyColor,
+                                                isValidate: isValidate,
+                                                fillColor: AppColors
+                                                    .textFieldFillColor,
+                                                borderColor:
+                                                    AppColors.transparent,
+                                                onSelected: (selectedIndex) {
+                                                  dropdownValue.value =
+                                                      selectedIndex;
+                                                  if (dropdownValue.value ==
+                                                      "Offline ( 	Koramangala , Haralur )") {
+                                                    context.read<AuthBloc>().add(
+                                                        const GetBrachesEvent());
+                                                  }
+                                                  classController.text =
+                                                      selectedIndex;
+                                                },
+                                                errorMessage:
+                                                    'Please select class',
+                                                dropList: classList,
+                                                hintText:
+                                                    'Choose Preferred Class Mode*',
+                                              ),
+                                              SizedBox(
+                                                  height: kSize.height * .015),
+                                              dropdownValue.value ==
+                                                      "Offline ( 	Koramangala , Haralur )"
+                                                  ? BlocConsumer<AuthBloc,
+                                                      AuthState>(
+                                                      listener:
+                                                          (context, state) {},
+                                                      buildWhen:
+                                                          (previous, current) =>
+                                                              previous.status !=
+                                                              current.status,
+                                                      builder:
+                                                          (context, state) {
+                                                        if (state.status
+                                                            is StatusLoading) {
+                                                          return Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                                    strokeWidth:
+                                                                        1,
+                                                                    color: Colors
+                                                                        .black),
+                                                          );
+                                                        } else if (state.status
+                                                            is StatusSuccess) {
+                                                          return BranchDropDownButton(
                                                               fillColor: AppColors
                                                                   .textFieldFillColor,
                                                               isValidate:
@@ -445,140 +454,149 @@ class _RegisterViewState extends State<RegisterView> {
                                                               dropList: state
                                                                   .branchList,
                                                               hintText:
-                                                                  'Choose Preferred Branch*',
-                                                            );
-                                                          } else if (state
+                                                                  'Choose Preferred Branch*');
+                                                        } else if (state.status
+                                                            is StatusFailure) {
+                                                          final status = state
                                                                   .status
-                                                              is StatusFailure) {
-                                                            final status = state
-                                                                    .status
-                                                                as StatusFailure;
-                                                            return Text(status
-                                                                .errorMessage);
-                                                          } else {
-                                                            return const SizedBox();
-                                                          }
-                                                        },
-                                                      )
-                                                    : const SizedBox(),
-                                                SizedBox(
-                                                    height: kSize.height * .03),
-                                                PrimaryButton(
-                                                  backgroundColor:
-                                                      AppColors.primaryColor,
-                                                  onPressed: () {
-                                                    if (classController
-                                                        .text.isEmpty) {
-                                                      isValidate.value = false;
+                                                              as StatusFailure;
+                                                          return Text(status
+                                                              .errorMessage);
+                                                        } else {
+                                                          return const SizedBox();
+                                                        }
+                                                      },
+                                                    )
+                                                  : const SizedBox(),
+                                              SizedBox(
+                                                  height: kSize.height * .03),
+                                              PrimaryButton(
+                                                backgroundColor:
+                                                    AppColors.primaryColor,
+                                                onPressed: () {
+                                                  if (classController
+                                                      .text.isEmpty) {
+                                                    isValidate.value = false;
+                                                  } else if (classController
+                                                          .text ==
+                                                      "Online") {
+                                                    isValidate.value = true;
+                                                  } else if (branchController
+                                                      .text.isNotEmpty) {
+                                                    isValidate.value = true;
+                                                  } else {
+                                                    isValidate.value = false;
+                                                  }
+                                                  if (formKey.currentState!
+                                                      .validate()) {
+                                                    if (phoneController.text ==
+                                                        alternativePhoneController
+                                                            .text) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      AppColors
+                                                                          .blackColor,
+                                                                  content: Text(
+                                                                    "whatsapp number and alternative mobile number cannot be the same.",
+                                                                    style: AppTypography
+                                                                        .dmSansRegular
+                                                                        .copyWith(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                AppColors.secondaryColor),
+                                                                  )));
                                                     } else if (classController
-                                                            .text ==
-                                                        "Online") {
-                                                      isValidate.value = true;
-                                                    } else if (branchController
-                                                        .text.isNotEmpty) {
-                                                      isValidate.value = true;
+                                                                .text ==
+                                                            "Offline ( 	Koramangala , Haralur )" &&
+                                                        branchController
+                                                            .text.isEmpty) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          backgroundColor:
+                                                              AppColors
+                                                                  .redColor,
+                                                          content: Text(
+                                                            "Please select any branch.",
+                                                            style: AppTypography
+                                                                .dmSansRegular
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: AppColors
+                                                                        .secondaryColor),
+                                                          ),
+                                                        ),
+                                                      );
                                                     } else {
-                                                      isValidate.value = false;
-                                                    }
-                                                    if (formKey.currentState!
-                                                        .validate()) {
-                                                      if (phoneController
-                                                              .text ==
-                                                          alternativePhoneController
-                                                              .text) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                                SnackBar(
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .blackColor,
-                                                                    content:
-                                                                        Text(
-                                                                      "whatsapp number and alternative mobile number cannot be the same.",
-                                                                      style: AppTypography.dmSansRegular.copyWith(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              AppColors.secondaryColor),
-                                                                    )));
-                                                      } else if (classController
-                                                                  .text ==
-                                                              "Offline ( 	Koramangala , Haralur )" &&
-                                                          branchController
-                                                              .text.isEmpty) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                                SnackBar(
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .redColor,
-                                                                    content:
-                                                                        Text(
-                                                                      "Please select any branch.",
-                                                                      style: AppTypography.dmSansRegular.copyWith(
-                                                                          fontSize:
-                                                                              14,
-                                                                          color:
-                                                                              AppColors.secondaryColor),
-                                                                    )));
-                                                      } else {
-                                                        final param = PmRegisterModel(
-                                                            username: userNameController  
-                                                                .text,
-                                                            name: firstNameController
-                                                                    .text +
-                                                                " ${lastNameController.text}",
-                                                            address:
-                                                                addressController
-                                                                    .text,
-                                                            dob: formattedDate(
-                                                                dateOfBirthController
-                                                                    .text),
-                                                            email: emailController
-                                                                .text,
-                                                            mobile:
-                                                                phoneController
-                                                                    .text,
-                                                            guardian:
-                                                                gardiensNameController
-                                                                    .text,
-                                                            password:
-                                                                passwordController
-                                                                    .text,
-                                                            alternativeMobile:
-                                                                alternativePhoneController
-                                                                    .text,
-                                                            branch:
-                                                                branchDropdownValue,
-                                                            classMode: classController
-                                                                        .text ==
-                                                                    "Offline ( 	Koramangala , Haralur )"
-                                                                ? "Offline"
-                                                                : classController
-                                                                    .text);
-                                                        context
-                                                            .read<AuthBloc>()
-                                                            .add(RegisterEvent(
+                                                      print(
+                                                          "Country code : ${altcountryCodeController.text}");
+                                                      final param = PmRegisterModel(
+                                                          username:
+                                                              userNameController
+                                                                  .text,
+                                                          name: firstNameController.text +
+                                                              " ${lastNameController.text}",
+                                                          address:
+                                                              addressController
+                                                                  .text,
+                                                          dob: formattedDate(
+                                                              dateOfBirthController
+                                                                  .text),
+                                                          email: emailController
+                                                              .text,
+                                                          mobile: wappcountryCodeController
+                                                                  .text +
+                                                              phoneController
+                                                                  .text,
+                                                          guardian:
+                                                              gardiensNameController
+                                                                  .text,
+                                                          password:
+                                                              passwordController
+                                                                  .text,
+                                                          alternativeMobile:
+                                                              altcountryCodeController
+                                                                      .text +
+                                                                  alternativePhoneController
+                                                                      .text,
+                                                          branch:
+                                                              branchDropdownValue,
+                                                          classMode: classController
+                                                                      .text ==
+                                                                  "Offline ( 	Koramangala , Haralur )"
+                                                              ? "Offline"
+                                                              : classController
+                                                                  .text);
+                                                      context
+                                                          .read<AuthBloc>()
+                                                          .add(
+                                                            RegisterEvent(
                                                                 pmRegisterModel:
-                                                                    param));
-                                                      }
+                                                                    param),
+                                                          );
                                                     }
-                                                  },
-                                                  labelColor:
-                                                      AppColors.secondaryColor,
-                                                  label: AppStrings.signUp,
-                                                ),
-                                                SizedBox(
-                                                    height: kSize.height * .03),
-                                              ]);
+                                                  }
+                                                },
+                                                labelColor:
+                                                    AppColors.secondaryColor,
+                                                label: AppStrings.signUp,
+                                              ),
+                                              SizedBox(
+                                                  height: kSize.height * .03),
+                                            ],
+                                          );
                                         },
                                       );
                                     },

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/widgets.dart';
 import 'package:get/instance_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -24,7 +23,8 @@ import 'package:music_app/src/presentation/view/normal_class/widgets/customappba
 ////////////////////////////////////////////
 
 class ProfileController extends GetxController {
-  var lastDay = '2024-04-22'.obs;
+  var lastDay = '2020-04-22'.obs;
+  var validto = '2020-04-22'.obs;
 
   @override
   void onInit() {
@@ -47,6 +47,7 @@ class ProfileController extends GetxController {
       final jsonData = json.decode(response.body);
 
       lastDay.value = jsonData['profile_details']['last_day'] ?? '';
+      validto.value = jsonData['profile_details']['valid_to'] ?? '';
       print(lastDay.value);
     } catch (e) {
       print('Error fetching last day: $e');
@@ -59,12 +60,14 @@ class ProfileController extends GetxController {
 ////////////////////////////////////////////
 class LastDayModel {
   String lastDay;
+  String validTo;
 
-  LastDayModel({required this.lastDay});
+  LastDayModel({required this.lastDay, required this.validTo});
 
   factory LastDayModel.fromJson(Map<String, dynamic> json) {
     return LastDayModel(
       lastDay: json['profile_details']['last_day'] ?? '',
+      validTo: json['profile_details']['valid_to'] ?? '',
     );
   }
 }

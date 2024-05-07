@@ -14,6 +14,7 @@ abstract class ICreditClassRepository {
       {required String classId, required String reason});
   Future<EmergencyCancelModel> emergencyCancelClass(
       {required String classId, required String reason});
+  // Future<UpcomingSlotesModel> getUpcomingSlotes();
   Future<UpcomingSlotesModel> getUpcomingSlotes();
   Future<CompletedNoteModel> getCreditClassNotes({required String classId});
 }
