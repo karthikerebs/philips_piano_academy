@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
@@ -17,6 +19,7 @@ import 'package:music_app/src/presentation/view/credit_class/widgets/select_bran
 import 'package:music_app/src/presentation/view/home/widgets/blog_details.dart';
 import 'package:music_app/src/presentation/view/home/widgets/tutorial_videos_details.dart';
 import 'package:music_app/src/presentation/view/home/widgets/weekly_attendace.dart';
+import 'package:music_app/src/presentation/view/renewal/renewal_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -177,21 +180,27 @@ class _HomeViewState extends State<HomeView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(height: kSize.height * .02),
                                 SizedBox(
                                   height: kSize.height * 0.06,
                                   width: kSize.width,
-                                  child: CommonButton(
-                                      label: "Available Slots",
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SelectBranch(
-                                                      classId: 1000,
-                                                      showApplyButton: false,
-                                                    )));
-                                      }),
+                                  child:
+                                      // isCheckRequestRenewal()
+                                      isCheckRequestRenewalforButton()
+                                          ? CommonButton(
+                                              label: "Available Slots",
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SelectBranch(
+                                                              classId: -1,
+                                                              showApplyButton:
+                                                                  false,
+                                                            )));
+                                              })
+                                          : SizedBox(),
                                 ),
                                 SizedBox(height: kSize.height * .015),
                                 Row(
@@ -403,7 +412,7 @@ class _HomeViewState extends State<HomeView> {
     final state = context.read<ProfileBloc>().state;
     DateTime today = DateTime.now();
     DateTime validTo =
-        DateTime.parse(state.profileData.profileDetails!.validTo!);
+        DateTime.parse(state.profileData.profileDetails!.lastDay!);
     differenceInDays = validTo.difference(today).inDays;
     int daysInMonth = 4;
     if (differenceInDays < daysInMonth) {
@@ -413,17 +422,6 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  // bool isCheckRequestRenewal() {
-  //   final state = context.read<ProfileBloc>().state;
-  //   final validTo = state.profileData.profileDetails?.validTo;
-  //   if (validTo != null) {
-  //     return DateFormat("yyyy-MM-dd").parse(validTo).isBefore(DateTime.now());
-  //   } else {
-  //     // Handle the case where profile data is not available
-  //     return false;
-  //   }
-  // }
-
   bool isCheckRequestRenewal() {
     final state = context.read<ProfileBloc>().state;
     final DateTime validTo = DateFormat("yyyy-MM-dd")
@@ -431,6 +429,17 @@ class _HomeViewState extends State<HomeView> {
     // .parse("2025-12-31");
     DateTime currentDate = DateTime.now();
     return validTo.isBefore(currentDate);
+  }
+
+  bool isCheckRequestRenewalforButton() {
+    // final lastDaystate = context.read<ProfileBloc>().state;
+    final ProfileController profileController = Get.put(ProfileController());
+    final DateTime lastDay = DateFormat("yyyy-MM-dd")
+        // .parse(lastDaystate.profileData.profileDetails!.lastDay ?? "");
+        .parse(profileController.lastDay.value);
+    // .parse("2025-12-31");
+    DateTime currentDate = DateTime.now();
+    return lastDay.isBefore(currentDate);
   }
 
   Widget paymentdue(Size kSize) {

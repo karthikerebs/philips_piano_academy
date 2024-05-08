@@ -30,6 +30,7 @@ class ChangeCreditClassView extends StatefulWidget {
 
 class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
   TextEditingController dateController = TextEditingController();
+
   var dateFormat = DateFormat('dd/MM/yyyy');
   ValueNotifier<int> isSelectSlot = ValueNotifier(-1);
   ValueNotifier<int> selectedSlote = ValueNotifier(-1);
@@ -45,6 +46,7 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.branchId);
     final kSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: CustomAppBar(title: "Credit Class"),
@@ -142,7 +144,7 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
                 ),
               ],
               child: Center(
-                child: widget.classId != 1000
+                child: widget.classId != -1
                     ? FooterButton(
                         label: 'Apply',
                         onPressed: () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/src/application/credit_class/credit_class_bloc.dart';
+import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/date_picker.dart';
@@ -17,6 +18,7 @@ class SelectDateWidget extends StatelessWidget {
   final String branchId;
   @override
   Widget build(BuildContext context) {
+    final state = context.read<ProfileBloc>().state;
     final kSize = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,6 +28,8 @@ class SelectDateWidget extends StatelessWidget {
                 color: AppColors.primaryColor, fontSize: kSize.height * 0.028)),
         SizedBox(height: kSize.height * .03),
         CustomDatePicker(
+          lastDate: DateTime.parse(
+              state.profileData.profileDetails!.validTo.toString()),
           hintColor: AppColors.primaryColor,
           dateController: dateController,
           errorMessage: '',
