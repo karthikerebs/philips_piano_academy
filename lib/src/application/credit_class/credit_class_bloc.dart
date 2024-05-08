@@ -51,8 +51,8 @@ class CreditClassBloc extends Bloc<CreditClassEvent, CreditClassState> {
       GetSlotsEvent event, Emitter<CreditClassState> emit) async {
     try {
       emit(state.copyWith(slotStatus: StatusLoading()));
-      final res =
-          await _iCreditClassRepository.getCreditClassSlotes(date: event.date);
+      final res = await _iCreditClassRepository.getCreditClassSlotes(
+          date: event.date, branchId: event.branchId);
       if (res.statusCode == '01') {
         emit(state.copyWith(slotStatus: StatusSuccess(), slotList: res.slotes));
       } else {
@@ -128,7 +128,7 @@ class CreditClassBloc extends Bloc<CreditClassEvent, CreditClassState> {
     try {
       emit(state.copyWith(upcomingSlotStatus: StatusLoading()));
 
-      final res = await _iCreditClassRepository.getUpcomingSlotes();
+      final res = await _iCreditClassRepository.getUpcomingSlotes(id: event.id);
       if (res.statusCode == '01') {
         emit(state.copyWith(
             upcomingSlotStatus: StatusSuccess(),

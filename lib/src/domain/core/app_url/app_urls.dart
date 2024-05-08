@@ -43,8 +43,8 @@ class AppUrls {
   static const emergencyCancelUrl = "$baseUrl/emergency-cancel";
   static const emergencyCancelCreditUrl = "$baseUrl/emergency-cancel-credit";
   static const changePasswordUrl = "$baseUrl/change-password";
-  // static const upcomingSlotesUrl = "$baseUrl/v2/upcoming-slotes/2";
-  static const upcomingSlotesUrl = "$baseUrl/upcoming-slotes";
+  static const upcomingSlotesUrl = "$baseUrl/v2/upcoming-slotes";
+  // static const upcomingSlotesUrl = "$baseUrl/upcoming-slotes";
   static const upcomingPaidSlotesUrl = "$baseUrl/upcoming-paidslotes";
   static const getRenewalFeesUrl = "$baseUrl/get-renewalfee";
   static const renewalFeeDetailsUrl = "$baseUrl/renewal-fee-details";

@@ -3,7 +3,6 @@ import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class SupportView extends StatefulWidget {

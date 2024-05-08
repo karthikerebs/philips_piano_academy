@@ -7,7 +7,8 @@ import 'package:music_app/src/domain/models/response_models/upcoming_slotes_mode
 
 abstract class ICreditClassRepository {
   Future<CreditClassModel> getCreditClass();
-  Future<SlotModel> getCreditClassSlotes({required String date});
+  Future<SlotModel> getCreditClassSlotes(
+      {required String date, required String branchId});
   Future<CommonResponseModel> bookCreditClass(
       {required String date, required String classId, required String slotId});
   Future<CommonResponseModel> cancelCreditClass(
@@ -15,6 +16,6 @@ abstract class ICreditClassRepository {
   Future<EmergencyCancelModel> emergencyCancelClass(
       {required String classId, required String reason});
   // Future<UpcomingSlotesModel> getUpcomingSlotes();
-  Future<UpcomingSlotesModel> getUpcomingSlotes();
+  Future<UpcomingSlotesModel> getUpcomingSlotes({required int id});
   Future<CompletedNoteModel> getCreditClassNotes({required String classId});
 }

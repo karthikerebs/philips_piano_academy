@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/auth/bloc/auth_bloc.dart';
 import 'package:music_app/src/application/core/status.dart';
+import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/custom_loading.dart';
 import 'package:music_app/src/presentation/core/widgets/drop_down.dart';
@@ -14,9 +17,13 @@ import 'package:music_app/src/presentation/core/widgets/scroll_behaviour.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 import 'package:music_app/src/presentation/view/register/widgets/branch_dropdown.dart';
+import 'package:music_app/src/presentation/view/renewal/renewal_view.dart';
 
 class SelectBranch extends StatefulWidget {
-  const SelectBranch({super.key});
+  const SelectBranch(
+      {super.key, required this.classId, required this.showApplyButton});
+  final int classId;
+  final bool showApplyButton;
 
   @override
   State<SelectBranch> createState() => _SelectBranchState();
@@ -27,6 +34,7 @@ class _SelectBranchState extends State<SelectBranch> {
   TextEditingController branchController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
+  final ProfileController profileController = Get.put(ProfileController());
   final formKey = GlobalKey<FormState>();
   List<String> classList = <String>[
     'Online',
@@ -42,6 +50,7 @@ class _SelectBranchState extends State<SelectBranch> {
   final errorMessage = ValueNotifier("User name should not be empty");
   @override
   Widget build(BuildContext context) {
+    final profileState = context.read<ProfileBloc>().state;
     final kSize = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
@@ -255,49 +264,54 @@ class _SelectBranchState extends State<SelectBranch> {
                                                                     .text =
                                                                 0.toString();
                                                           }
+                                                          if (profileState
+                                                                      .profileData
+                                                                      .profileDetails
+                                                                      ?.classMode ==
+                                                                  "Online" &&
+                                                              classController
+                                                                      .text ==
+                                                                  "Online") {
+                                                            Navigator.pop(
+                                                                context);
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                behavior:
+                                                                    SnackBarBehavior
+                                                                        .floating,
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .greenColor,
+                                                                content: Text(
+                                                                  "Request for Online class has been sent successfully",
+                                                                  style: AppTypography
+                                                                      .dmSansRegular
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              AppColors.secondaryColor),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
                                                           print(branchController
                                                               .text);
-                                                          // final param = PmRegisterModel(
-                                                          //     username: userNameController
-                                                          //         .text,
-                                                          //     name: firstNameController
-                                                          //             .text +
-                                                          //         " ${lastNameController.text}",
-                                                          //     address:
-                                                          //         addressController
-                                                          //             .text,
-                                                          //     dob: formattedDate(
-                                                          //         dateOfBirthController
-                                                          //             .text),
-                                                          //     email: emailController
-                                                          //         .text,
-                                                          //     mobile:
-                                                          //         phoneController
-                                                          //             .text,
-                                                          //     guardian:
-                                                          //         gardiensNameController
-                                                          //             .text,
-                                                          //     password:
-                                                          //         passwordController
-                                                          //             .text,
-                                                          //     alternativeMobile:
-                                                          //         alternativePhoneController
-                                                          //             .text,
-                                                          //     branch:
-                                                          //         branchDropdownValue,
-                                                          //     classMode: classController
-                                                          //                 .text ==
-                                                          //             "Offline ( 	Koramangala , Haralur )"
-                                                          //         ? "Offline"
-                                                          //         : classController
-                                                          //             .text);
-                                                          // context
-                                                          //     .read<AuthBloc>()
-                                                          //     .add(RegisterEvent(
-                                                          //         pmRegisterModel:
-                                                          //             param));
+                                                          // print(profileController.)
                                                         }
                                                       }
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          RouterConstants
+                                                              .creditClassChangeRoute,
+                                                          arguments: [
+                                                            widget.classId,
+                                                            int.parse(
+                                                                branchController
+                                                                    .text)
+                                                          ]);
                                                     },
                                                     labelColor: AppColors
                                                         .secondaryColor,

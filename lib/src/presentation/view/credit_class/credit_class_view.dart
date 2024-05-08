@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/application/credit_class/credit_class_bloc.dart';
+import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/domain/models/response_models/credit_class_model/credit_class.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
@@ -14,8 +13,8 @@ import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/cancel_dialog_box.dart';
 import 'package:music_app/src/presentation/view/credit_class/widgets/class_detail_data.dart';
+import 'package:music_app/src/presentation/view/credit_class/widgets/select_branch.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
-import 'package:music_app/src/presentation/view/renewal/renewal_view.dart';
 
 class CreditClassView extends StatefulWidget {
   const CreditClassView({super.key});
@@ -25,7 +24,7 @@ class CreditClassView extends StatefulWidget {
 }
 
 class _CreditClassViewState extends State<CreditClassView> {
-  final ProfileController profileController = Get.put(ProfileController());
+  // final ProfileController profileController = Get.put(ProfileController());
 
   @override
   void initState() {
@@ -57,6 +56,8 @@ class _CreditClassViewState extends State<CreditClassView> {
                     CustomMessage(
                             context: context,
                             message: 'Access Denied. Kindly reauthenticate.',
+                            // message: profileState
+                            //     .profileData.profileDetails?.classMode,
                             style: MessageStyle.error)
                         .show();
                     Navigator.pushNamedAndRemoveUntil(
@@ -329,13 +330,14 @@ class _CreditClassViewState extends State<CreditClassView> {
                   FooterButton(
                       label: 'Continue',
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, RouterConstants.creditClassChangeRoute,
-                            arguments: creditClass.id);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => SelectBranch()));
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectBranch(
+                                      classId: creditClass.id!,
+                                      showApplyButton: true,
+                                    )));
                       },
                       backgroundColor: AppColors.blackColor),
                 ],
@@ -346,9 +348,11 @@ class _CreditClassViewState extends State<CreditClassView> {
   }
 
   bool isCheckBookingRequest() {
+    final state = context.read<ProfileBloc>().state;
     final DateTime validTo = DateFormat("yyyy-MM-dd")
         // .parse("2024-04-21");
-        .parse(profileController.validto.value);
+        // .parse(profileController.validto.value);
+        .parse(state.profileData.profileDetails!.validTo!);
     DateTime currentDate = DateTime.now();
     return validTo.isBefore(currentDate);
   }

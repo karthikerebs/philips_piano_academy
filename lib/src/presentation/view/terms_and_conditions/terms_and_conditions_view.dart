@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
 import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';

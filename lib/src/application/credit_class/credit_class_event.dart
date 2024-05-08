@@ -15,10 +15,11 @@ class GetCreditClassEvent extends CreditClassEvent {
 }
 
 class GetSlotsEvent extends CreditClassEvent {
-  const GetSlotsEvent({required this.date});
+  const GetSlotsEvent(this.branchId, {required this.date});
   final String date;
+  final String branchId;
   @override
-  List<Object> get props => [date];
+  List<Object> get props => [date, branchId];
 }
 
 class BookCreditClassEvent extends CreditClassEvent {
@@ -48,9 +49,10 @@ class EmergencyCancelEvent extends CreditClassEvent {
 }
 
 class UpcomingCreditSloteEvent extends CreditClassEvent {
-  const UpcomingCreditSloteEvent();
+  const UpcomingCreditSloteEvent({required this.id});
+  final int id;
   @override
-  List<Object> get props => [];
+  List<Object> get props => [id];
 }
 
 class GetCreditClassNoteEvent extends CreditClassEvent {

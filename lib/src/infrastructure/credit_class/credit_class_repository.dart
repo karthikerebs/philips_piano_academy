@@ -34,10 +34,12 @@ class CreditClassRepository extends ICreditClassRepository {
   }
 
   @override
-  Future<SlotModel> getCreditClassSlotes({required String date}) async {
+  Future<SlotModel> getCreditClassSlotes(
+      {required String date, required String branchId}) async {
     try {
       final response = await client.postWithProfile(
-          url: AppUrls.getCreditClassSloteUrl, body: {"class_date": date});
+          url: AppUrls.getCreditClassSloteUrl,
+          body: {"class_date": date, "branch_id": branchId});
       final decode = jsonDecode(response.body) as Map<String, dynamic>;
       return SlotModel.fromJson(decode);
     } on ApiFailure catch (e) {
@@ -99,10 +101,10 @@ class CreditClassRepository extends ICreditClassRepository {
   }
 
   @override
-  Future<UpcomingSlotesModel> getUpcomingSlotes() async {
+  Future<UpcomingSlotesModel> getUpcomingSlotes({required int id}) async {
     try {
-      final response =
-          await client.getWithProfile(url: AppUrls.upcomingSlotesUrl);
+      final response = await client.getWithProfile(
+          url: "${AppUrls.upcomingSlotesUrl}/${id.toString()}");
       final decode = jsonDecode(response.data) as Map<String, dynamic>;
       return UpcomingSlotesModel.fromJson(decode);
     } on ApiFailure catch (e) {

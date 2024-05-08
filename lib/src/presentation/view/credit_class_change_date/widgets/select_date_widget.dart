@@ -8,9 +8,13 @@ import 'package:music_app/src/presentation/core/widgets/date_picker.dart';
 
 class SelectDateWidget extends StatelessWidget {
   const SelectDateWidget(
-      {super.key, required this.dateController, required this.dateFormat});
+      {super.key,
+      required this.dateController,
+      required this.dateFormat,
+      required this.branchId});
   final TextEditingController dateController;
   final DateFormat dateFormat;
+  final String branchId;
   @override
   Widget build(BuildContext context) {
     final kSize = MediaQuery.of(context).size;
@@ -28,9 +32,8 @@ class SelectDateWidget extends StatelessWidget {
           hintText: 'Select Date',
           onChanged: (value) {
             dateController.text = dateFormat.format(value);
-            context
-                .read<CreditClassBloc>()
-                .add(GetSlotsEvent(date: formattedDate(dateController.text)));
+            context.read<CreditClassBloc>().add(GetSlotsEvent(
+                date: formattedDate(dateController.text), branchId));
           },
           firstDate: DateTime.now(),
         ),

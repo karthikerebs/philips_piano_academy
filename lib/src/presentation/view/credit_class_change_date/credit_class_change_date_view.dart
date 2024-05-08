@@ -16,8 +16,14 @@ import 'package:music_app/src/presentation/view/credit_class_change_date/widgets
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class ChangeCreditClassView extends StatefulWidget {
-  const ChangeCreditClassView({super.key, required this.classId});
+  const ChangeCreditClassView({
+    super.key,
+    required this.classId,
+    required this.branchId,
+  });
   final int classId;
+  final int branchId;
+
   @override
   State<ChangeCreditClassView> createState() => _ChangeCreditClassViewState();
 }
@@ -31,7 +37,9 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
       ValueNotifier<List<List<int>>>([]);
   @override
   void initState() {
-    context.read<CreditClassBloc>().add(const UpcomingCreditSloteEvent());
+    context
+        .read<CreditClassBloc>()
+        .add(UpcomingCreditSloteEvent(id: widget.branchId));
     super.initState();
   }
 
@@ -49,7 +57,10 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SelectDateWidget(
-                dateController: dateController, dateFormat: dateFormat),
+              dateController: dateController,
+              dateFormat: dateFormat,
+              branchId: widget.branchId.toString(),
+            ),
             // const Spacer(),
             SizedBox(height: kSize.height * .02),
 
@@ -62,6 +73,7 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
                     if (state.bookStatus is StatusLoading) {
                       CustomLoading.show(context);
                     } else if (state.bookStatus is StatusSuccess) {
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
@@ -130,15 +142,17 @@ class _ChangeCreditClassViewState extends State<ChangeCreditClassView> {
                 ),
               ],
               child: Center(
-                child: FooterButton(
-                  label: 'Apply',
-                  onPressed: () {
-                    bookClass();
-                  },
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kSize.width * .17,
-                      vertical: kSize.height * .023),
-                ),
+                child: widget.classId != 1000
+                    ? FooterButton(
+                        label: 'Apply',
+                        onPressed: () {
+                          bookClass();
+                        },
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kSize.width * .17,
+                            vertical: kSize.height * .023),
+                      )
+                    : SizedBox(),
               ),
             ),
             SizedBox(height: kSize.height * .02),

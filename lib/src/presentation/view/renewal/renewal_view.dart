@@ -8,7 +8,6 @@ import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
-import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/application/renewal/renewal_bloc.dart';
 import 'package:music_app/src/domain/core/app_url/app_urls.dart';
 import 'package:music_app/src/domain/core/pref_key/preference_key.dart';
@@ -48,6 +47,7 @@ class ProfileController extends GetxController {
 
       lastDay.value = jsonData['profile_details']['last_day'] ?? '';
       validto.value = jsonData['profile_details']['valid_to'] ?? '';
+
       print(lastDay.value);
     } catch (e) {
       print('Error fetching last day: $e');
@@ -61,13 +61,16 @@ class ProfileController extends GetxController {
 class LastDayModel {
   String lastDay;
   String validTo;
+  String class_mode;
 
-  LastDayModel({required this.lastDay, required this.validTo});
+  LastDayModel(
+      {required this.lastDay, required this.validTo, required this.class_mode});
 
   factory LastDayModel.fromJson(Map<String, dynamic> json) {
     return LastDayModel(
       lastDay: json['profile_details']['last_day'] ?? '',
       validTo: json['profile_details']['valid_to'] ?? '',
+      class_mode: json['profile_details']['class_mode'] ?? '',
     );
   }
 }
@@ -293,7 +296,6 @@ class _RenewalViewState extends State<RenewalView> {
   }
 
   bool isCheckRequestRenewal() {
-    final state = context.read<ProfileBloc>().state;
     final DateTime validTo = DateFormat("yyyy-MM-dd")
         // .parse("2024-04-21");
         .parse(profileController.lastDay.value);

@@ -9,9 +9,11 @@ import 'package:music_app/src/application/profile/profile_bloc.dart';
 import 'package:music_app/src/presentation/core/constants/images.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
+import 'package:music_app/src/presentation/core/widgets/common_button.dart';
 import 'package:music_app/src/presentation/core/widgets/custom_silver_delegate.dart';
 import 'package:music_app/src/presentation/core/widgets/footer_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
+import 'package:music_app/src/presentation/view/credit_class/widgets/select_branch.dart';
 import 'package:music_app/src/presentation/view/home/widgets/blog_details.dart';
 import 'package:music_app/src/presentation/view/home/widgets/tutorial_videos_details.dart';
 import 'package:music_app/src/presentation/view/home/widgets/weekly_attendace.dart';
@@ -175,6 +177,22 @@ class _HomeViewState extends State<HomeView> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                SizedBox(
+                                  height: kSize.height * 0.06,
+                                  width: kSize.width,
+                                  child: CommonButton(
+                                      label: "Available Slots",
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SelectBranch(
+                                                      classId: 1000,
+                                                      showApplyButton: false,
+                                                    )));
+                                      }),
+                                ),
                                 SizedBox(height: kSize.height * .015),
                                 Row(
                                   mainAxisAlignment:

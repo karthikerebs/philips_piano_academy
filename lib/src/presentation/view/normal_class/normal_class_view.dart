@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_app/src/application/normal_class/normal_class_bloc.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
-import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/custom_tab_bar.dart';
 
 class NormalClassView extends StatefulWidget {

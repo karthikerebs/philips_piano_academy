@@ -123,9 +123,12 @@ class AppRouter {
           builder: (_) => const CreditClassView(),
         );
       case RouterConstants.creditClassChangeRoute:
-        final args = settings.arguments as int;
+        final args = settings.arguments as List;
         return MaterialPageRoute<ChangeCreditClassView>(
-          builder: (_) => ChangeCreditClassView(classId: args),
+          builder: (_) => ChangeCreditClassView(
+            classId: args[0],
+            branchId: args[1],
+          ),
         );
       case RouterConstants.installemntsView:
         return MaterialPageRoute<InstallmentsView>(

@@ -6,7 +6,6 @@ import 'package:music_app/src/application/home/home_bloc.dart';
 import 'package:music_app/src/domain/models/response_models/tutorial_video_model/video.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
 import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
 
 class TutorialVideosView extends StatefulWidget {

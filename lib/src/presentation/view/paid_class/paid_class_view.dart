@@ -4,8 +4,6 @@ import 'package:music_app/app/router/router_constatnts.dart';
 import 'package:music_app/src/application/core/status.dart';
 import 'package:music_app/src/application/paid_class/paid_class_bloc.dart';
 import 'package:music_app/src/presentation/core/theme/colors.dart';
-import 'package:music_app/src/presentation/core/theme/typography.dart';
-import 'package:music_app/src/presentation/core/widgets/back_button.dart';
 import 'package:music_app/src/presentation/core/widgets/common_button.dart';
 import 'package:music_app/src/presentation/core/widgets/message_view.dart';
 import 'package:music_app/src/presentation/view/normal_class/widgets/customappbar.dart';
